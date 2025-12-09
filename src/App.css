@@ -47,6 +47,10 @@
   /* Radius */
   --radius: 0.625rem;
 }
+.shadow-card {
+  box-shadow: 0px 0px 20px 0px #CBCACA40;
+}
+
 
 /* ==============================
    DARK MODE VARIABLES
