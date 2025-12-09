@@ -3,7 +3,7 @@ import './App.css';
 function App() {
   return (
     <>
-      <p className='text-red-200'>Tailwind Oke </p>
+      <p className='text-red-200 display-xl-medium'>Tailwind Oke </p>
     </>
   );
 }

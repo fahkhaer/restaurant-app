@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @custom-variant dark (&:is(.dark *));
 
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -43,6 +44,162 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ==============================
+   FONT SIZES & WEIGHTS
+============================== */
+
+/* Display 3XL */
+.display-3xl-regular    { font-size: 3.75rem; line-height: 4.5rem; font-weight: 400; }
+.display-3xl-medium     { font-size: 3.75rem; line-height: 4.5rem; font-weight: 500; }
+.display-3xl-semibold   { font-size: 3.75rem; line-height: 4.5rem; font-weight: 600; }
+.display-3xl-bold       { font-size: 3.75rem; line-height: 4.5rem; font-weight: 700; }
+.display-3xl-extrabold  { font-size: 3.75rem; line-height: 4.5rem; font-weight: 800; }
+
+/* Display 2XL */
+.display-2xl-regular    { font-size: 3rem; line-height: 3.75rem; letter-spacing: -0.02em; font-weight: 400; }
+.display-2xl-medium     { font-size: 3rem; line-height: 3.75rem; letter-spacing: -0.02em; font-weight: 500; }
+.display-2xl-semibold   { font-size: 3rem; line-height: 3.75rem; letter-spacing: -0.02em; font-weight: 600; }
+.display-2xl-bold       { font-size: 3rem; line-height: 3.75rem; letter-spacing: -0.02em; font-weight: 700; }
+.display-2xl-extrabold  { font-size: 3rem; line-height: 3.75rem; letter-spacing: -0.02em; font-weight: 800; }
+
+/* Display XL */
+.display-xl-regular    { font-size: 2.5rem; line-height: 3rem; letter-spacing: -0.02em; font-weight: 400; }
+.display-xl-medium     { font-size: 2.5rem; line-height: 3rem; letter-spacing: -0.02em; font-weight: 500; }
+.display-xl-semibold   { font-size: 2.5rem; line-height: 3rem; letter-spacing: -0.02em; font-weight: 600; }
+.display-xl-bold       { font-size: 2.5rem; line-height: 3rem; letter-spacing: -0.02em; font-weight: 700; }
+.display-xl-extrabold  { font-size: 2.5rem; line-height: 3rem; letter-spacing: -0.02em; font-weight: 800; }
+
+/* Display LG */
+.display-lg-regular    { font-size: 2.25rem; line-height: 2.75rem; letter-spacing: -0.02em; font-weight: 400; }
+.display-lg-medium     { font-size: 2.25rem; line-height: 2.75rem; letter-spacing: -0.02em; font-weight: 500; }
+.display-lg-semibold   { font-size: 2.25rem; line-height: 2.75rem; letter-spacing: -0.02em; font-weight: 600; }
+.display-lg-bold       { font-size: 2.25rem; line-height: 2.75rem; letter-spacing: -0.02em; font-weight: 700; }
+.display-lg-extrabold  { font-size: 2.25rem; line-height: 2.75rem; letter-spacing: -0.02em; font-weight: 800; }
+
+/* Display MD */
+.display-md-regular    { font-size: 2rem; line-height: 2.5rem; font-weight: 400; }
+.display-md-medium     { font-size: 2rem; line-height: 2.5rem; font-weight: 500; }
+.display-md-semibold   { font-size: 2rem; line-height: 2.5rem; font-weight: 600; }
+.display-md-bold       { font-size: 2rem; line-height: 2.5rem; font-weight: 700; }
+.display-md-extrabold  { font-size: 2rem; line-height: 2.5rem; font-weight: 800; }
+
+/* Display SM */
+.display-sm-regular    { font-size: 1.75rem; line-height: 2.375rem; font-weight: 400; }
+.display-sm-medium     { font-size: 1.75rem; line-height: 2.375rem; font-weight: 500; }
+.display-sm-semibold   { font-size: 1.75rem; line-height: 2.375rem; font-weight: 600; }
+.display-sm-bold       { font-size: 1.75rem; line-height: 2.375rem; font-weight: 700; }
+.display-sm-extrabold  { font-size: 1.75rem; line-height: 2.375rem; font-weight: 800; }
+
+/* Display XS */
+.display-xs-regular    { font-size: 1.5rem; line-height: 2.25rem; font-weight: 400; }
+.display-xs-medium     { font-size: 1.5rem; line-height: 2.25rem; font-weight: 500; }
+.display-xs-semibold   { font-size: 1.5rem; line-height: 2.25rem; font-weight: 600; }
+.display-xs-bold       { font-size: 1.5rem; line-height: 2.25rem; font-weight: 700; }
+.display-xs-extrabold  { font-size: 1.5rem; line-height: 2.25rem; font-weight: 800; }
+
+/* Text XL */
+.text-xl-regular    { font-size: 1.25rem; line-height: 2.125rem; font-weight: 400; }
+.text-xl-medium     { font-size: 1.25rem; line-height: 2.125rem; font-weight: 500; }
+.text-xl-semibold   { font-size: 1.25rem; line-height: 2.125rem; font-weight: 600; }
+.text-xl-bold       { font-size: 1.25rem; line-height: 2.125rem; font-weight: 700; }
+.text-xl-extrabold  { font-size: 1.25rem; line-height: 2.125rem; font-weight: 800; }
+
+/* Text LG */
+.text-lg-regular    { font-size: 1.125rem; line-height: 2rem; font-weight: 400; }
+.text-lg-medium     { font-size: 1.125rem; line-height: 2rem; font-weight: 500; }
+.text-lg-semibold   { font-size: 1.125rem; line-height: 2rem; font-weight: 600; }
+.text-lg-bold       { font-size: 1.125rem; line-height: 2rem; font-weight: 700; }
+.text-lg-extrabold  { font-size: 1.125rem; line-height: 2rem; font-weight: 800; }
+
+/* Text MD */
+.text-md-regular    { font-size: 1rem; line-height: 1.875rem; font-weight: 400; }
+.text-md-medium     { font-size: 1rem; line-height: 1.875rem; font-weight: 500; }
+.text-md-semibold   { font-size: 1rem; line-height: 1.875rem; font-weight: 600; }
+.text-md-bold       { font-size: 1rem; line-height: 1.875rem; font-weight: 700; }
+.text-md-extrabold  { font-size: 1rem; line-height: 1.875rem; font-weight: 800; }
+
+/* Text SM */
+.text-sm-regular    { font-size: 0.875rem; line-height: 1.75rem; font-weight: 400; }
+.text-sm-medium     { font-size: 0.875rem; line-height: 1.75rem; font-weight: 500; }
+.text-sm-semibold   { font-size: 0.875rem; line-height: 1.75rem; font-weight: 600; }
+.text-sm-bold       { font-size: 0.875rem; line-height: 1.75rem; font-weight: 700; }
+.text-sm-extrabold  { font-size: 0.875rem; line-height: 1.75rem; font-weight: 800; }
+
+/* Text XS */
+.text-xs-regular    { font-size: 0.75rem; line-height: 1.5rem; font-weight: 400; }
+.text-xs-medium     { font-size: 0.75rem; line-height: 1.5rem; font-weight: 500; }
+.text-xs-semibold   { font-size: 0.75rem; line-height: 1.5rem; font-weight: 600; }
+.text-xs-bold       { font-size: 0.75rem; line-height: 1.5rem; font-weight: 700; }
+.text-xs-extrabold  { font-size: 0.75rem; line-height: 1.5rem; font-weight: 800; }
+
+/* ==============================
+   COLORS
+============================== */
+:root {
+  /* Base */
+  --base-white: #FFFFFF;
+  --base-black: #000000;
+
+  /* Neutral */
+  --neutral-25: #FDFDFD;
+  --neutral-50: #FAFAFA;
+  --neutral-100: #F5F5F5;
+  --neutral-200: #E9EAEB;
+  --neutral-300: #D5D7DA;
+  --neutral-400: #A4A7AE;
+  --neutral-500: #717680;
+  --neutral-600: #535862;
+  --neutral-700: #414651;
+  --neutral-800: #252B37;
+  --neutral-900: #181D27;
+  --neutral-950: #0A0D12;
+
+  /* Primary */
+  --primary-100: #C12116;
+
+  /* Accent */
+  --red: #D9206E;
+  --green: #079455;
+  --yellow: #FDB022;
+}
+
+/* Background & Text Utilities */
+.bg-base-white { background-color: var(--base-white); }
+.bg-base-black { background-color: var(--base-black); }
+.text-neutral-500 { color: var(--neutral-500); }
+.text-primary-100 { color: var(--primary-100); }
+.text-red { color: var(--red); }
+.text-green { color: var(--green); }
+.text-yellow { color: var(--yellow); }
+
+/* ==============================
+   BODY & COMMON STYLES
+============================== */
+body {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--base-white);
+  color: var(--neutral-950);
+}
+
+button {
+  font-family: inherit;
+  border-radius: 0.625rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+}
+
+/* ==============================
+   FLEX UTILITIES
+============================== */
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-start  { display: flex; align-items: center; justify-content: flex-start; }
+
+
+
 
 /* SHADCN STYLES */
 @theme inline {
