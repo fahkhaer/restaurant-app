@@ -1,9 +1,18 @@
 import './App.css';
+import Navbar from './components/NavbarGuest';
+import NavbarGuest from './components/NavbarMain';
+
+import Hero from './components/ui/Hero';
 
 function App() {
   return (
     <>
-      <p className='text-red-200 display-xl-medium'>Tailwind Oke </p>
+    <NavbarGuest/>
+    {/* <Navbar/> */}
+    <div>
+
+    <Hero/>
+    </div>
     </>
   );
 }
