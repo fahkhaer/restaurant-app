@@ -1,5 +1,6 @@
 // TEXT RESPONSIVE BELUM BISA
-import SearchBar from './search';
+
+import SearchBar from "@/components/ui/search";
 
 function Hero() {
   return (
@@ -13,7 +14,6 @@ function Hero() {
             Search and refine your choice to discover the perfect restaurant.
           </p>
         </div>
-
         <SearchBar />
       </div>
     </div>
