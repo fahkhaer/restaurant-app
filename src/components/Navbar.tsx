@@ -1,5 +1,4 @@
 import { Badge } from '@/components/ui/badge';
-import { Command, CommandInput } from '@/components/ui/command';
 import { Icon } from '@iconify/react';
 import {
   DropdownMenu,
@@ -8,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown, Search } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
@@ -20,44 +19,30 @@ function Navbar() {
 
   return (
     <div
-      className='flex font-quicksand h-20 px-4 md:px-[120px] justify-between shadow-[0_0_20px_0_#CBCACA40]
+      className='flex  bg-black h-20 px-4 md:px-[120px] justify-between shadow-[0_0_20px_0_#CBCACA40]
 items-center'
     >
       <Link to={'/'}>
         <div className='size-10 w-fit gap-4 flex'>
           <img
             className='h-auto'
-            src='/logo.png'
+            src='src/assets/icons/logo.png'
             alt='Logo-text'
             style={{ width: 'clamp(2.5rem, 3.5vw, 2.63rem)' }}
           />
-          <p className='hidden md:block items-center tracking-wide font-extrabold text-display-lg'>
-            Booky
+          <p className='hidden md:block text-white items-center  display-md-extrabold'>
+            Foody
           </p>
         </div>
       </Link>
 
-      {/* SEARCH BAR - Navbar */}
-      {user?.role !== 'ADMIN' && (
-        <div className='hidden lg:block'>
-          <Command className='rounded-full justify-center h-22 border border-neutral-300 gap-2 px-4 md:min-w-[500px]'>
-            <CommandInput
-              className='text-neutral-600 text-sm '
-              placeholder='Search book'
-              onValueChange={() => {}}
-            />
-          </Command>
-        </div>
-      )}
-
       {/* Right Icons */}
       <div className='flex gap-6 items-center '>
-        <Search className='lg:hidden block' />
         {user?.role !== 'ADMIN' && (
           <Link to={'/cart'}>
             <div className='relative flex'>
               <Icon
-                className='relative'
+                className='relative text-white'
                 icon='lets-icons:bag-fill'
                 width='32'
                 height='32'
@@ -83,15 +68,18 @@ items-center'
             className='flex gap-4 items-center'
           >
             <Avatar>
-              <AvatarImage src='https://github.com/shadcn.png' />
+              <AvatarImage
+                className='h-12 rounded-full'
+                src='https://github.com/shadcn.png'
+              />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p className='text-lg-semibold hidden lg:block'>{username}</p>
+            <p className='text-lg-semibold text-white hidden lg:block'>{username}</p>
           </Link>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <ChevronDown className='hidden lg:block' />
+            <DropdownMenuTrigger className='lg:hidden'>
+              <ChevronDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent className='bg-white'>
               <DropdownMenuSeparator />
