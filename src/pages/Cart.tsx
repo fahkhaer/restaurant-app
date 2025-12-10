@@ -6,7 +6,7 @@ import { ChevronRight } from 'lucide-react';
 function Cart() {
   return (
     <div>
-      <h1>My Cart</h1>
+      <h1 className='pb-8'>My Cart</h1>
       <div className='shadow-card space-y-5 p-5 rounded-2xl'>
         <div className='flex items-center gap-2'>
           <img
