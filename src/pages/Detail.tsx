@@ -1,12 +1,15 @@
 import TabsMenu from '@/components/TabsMenu';
 import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
+import LoadMoreButton from '@/components/ui/LoadMoreButton';
+import ReviewersCard from '@/components/ui/ReviewersCard';
 
 import { Icon } from '@iconify/react';
+import { Star } from 'lucide-react';
 
 function Detail() {
   return (
-    <>
+    <section className='space-y-8'>
       {/* images */}
       <div className='flex gap-2.5'>
         <img
@@ -49,10 +52,28 @@ function Detail() {
           </div>
         }
       />
+      <hr className='w-full bg-neutral-300' />
       {/* menu */}
-      <span className='display-lg-extrabold'>Menu</span>
+      <h1>Menu</h1>
       <TabsMenu />
-    </>
+      <LoadMoreButton />
+
+      <hr className='w-full bg-neutral-300' />
+      {/* REVIEW */}
+      <div className='space-y-6'>
+        <h1>Review</h1>
+        <div className='flex gap-1 items-center text-xl-extrabold'>
+          <Star className='size-5 text-[#FFAB0D]' fill='#FFAB0D' />
+          <span>4.9</span> <span>(24 Ulasan)</span>
+        </div>
+        <div className='flex flex-wrap gap-5'>
+          <ReviewersCard />
+          <ReviewersCard />
+          <ReviewersCard />
+        </div>
+        <LoadMoreButton />
+      </div>
+    </section>
   );
 }
 
