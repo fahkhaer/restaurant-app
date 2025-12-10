@@ -32,7 +32,7 @@ const TabsTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       variant === 'default' &&
-        'inline-flex w-fit md:min-w-9 md:h-12 items-center border-[#D5D7DA] border justify-center whitespace-nowrap rounded-[100px] px-3 py-2 font-semibold text-md text-[#0A0D12] ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[#FFECEC] data-[state=active]:font-bold data-[state=active]:text-md data-[state=active]:border data-[state=active]:border-[#C12116]  data-[state=active]:text-[#C12116]',
+        'inline-flex w-fit md:min-w-19 md:h-12 items-center border-[#D5D7DA] border justify-center whitespace-nowrap rounded-[100px] px-4 py-2 font-semibold text-md text-[#0A0D12] ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[#FFECEC] data-[state=active]:font-bold data-[state=active]:text-md data-[state=active]:border data-[state=active]:border-[#C12116]  data-[state=active]:text-[#C12116]',
 
       variant === 'secondary' &&
         'inline-flex items-center justify-center md:h-10 border-[#D5D7DA] px-4 py-2 rounded-full border text-neutral-950 md:text-md-semibold transition-all whitespace-nowrap ' +
