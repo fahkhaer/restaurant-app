@@ -1,4 +1,4 @@
-import Card from '@/components/ui/card';
+import Card from '@/components/ui/CardStore';
 import LoadMoreButton from '@/components/ui/loadMoreButton';
 
 function Home() {
