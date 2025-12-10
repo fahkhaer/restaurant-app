@@ -1,6 +1,7 @@
 import TabsMenu from '@/components/TabsMenu';
 import { Button } from '@/components/ui/button';
-import Card from '@/components/ui/CardStore';
+import CardStore from '@/components/ui/CardStore';
+
 import { Icon } from '@iconify/react';
 
 function Detail() {
@@ -34,7 +35,7 @@ function Detail() {
         </div>
       </div>
       {/* store */}
-      <Card
+      <CardStore
         rightContent={
           <div className='flex gap-3'>
             <Button className='text-md-bold w-[140px]' variant={'outline'}>
