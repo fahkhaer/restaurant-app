@@ -1,7 +1,7 @@
 import { Star } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-type CardStoreProps = {
+type CardProps = {
   store?: string;
   location?: string;
   rating?: number;
@@ -9,11 +9,11 @@ type CardStoreProps = {
   rightContent?: ReactNode;
 };
 
-function CardStore({ store, location, rating, image, rightContent }: CardStoreProps) {
+function Card({ store, location, rating, image, rightContent }: CardProps) {
   return (
-    <div className='shadow-CardStore flex justify-between p-0 rounded-2xl w-full items-center space-y-4'>
+    <div className='shadow-card flex justify-between p-0 rounded-2xl w-full items-center space-y-4'>
       {/* left side */}
-      <div className='flex  w-[370px] gap-3'>
+      <div className='flex w-[370px] gap-3'>
         <img
           className='h-[120px] w-auto rounded-md object-cover'
           src={image || '/src/assets/images/burger-king.png'}
@@ -31,7 +31,7 @@ function CardStore({ store, location, rating, image, rightContent }: CardStorePr
             <span className='text-md-medium ml-1'>{rating ?? '4.9'}</span>
           </div>
           <span className='text-md-regular'>
-            {location || 'Jakarta Selatan  2.4 km'}
+            {location || 'Jakarta Selatan •  2.4 km'}
           </span>
         </div>
       </div>
@@ -83,4 +83,4 @@ function CardStore({ store, location, rating, image, rightContent }: CardStorePr
   );
 }
 
-export default CardStore;
+export default Card;
