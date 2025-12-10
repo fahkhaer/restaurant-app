@@ -48,7 +48,7 @@ function CardMenu({
           )}
           style={style}
         >
-          <div className='flex'>
+          <div className='flex items-center'>
             <img
               className={cn(
                 'size-[285px] rounded-l-2xl object-cover',
