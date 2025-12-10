@@ -2,12 +2,6 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ==============================
-   TAILWIND
-============================== */
-@import 'tailwindcss';
-@custom-variant dark (&:is(.dark *));
-
-/* ==============================
    ROOT & FONT
 ============================== */
 :root {
@@ -19,6 +13,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  
 
   /* Base colors */
   --base-white: #ffffff;
@@ -48,9 +44,8 @@
   --radius: 0.625rem;
 }
 .shadow-card {
-  box-shadow: 0px 0px 20px 0px #CBCACA40;
+  box-shadow: 0px 0px 20px 0px #cbcaca40;
 }
-
 
 /* ==============================
    DARK MODE VARIABLES
@@ -588,11 +583,16 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply font-extrabold text-4xl;
   }
 }
