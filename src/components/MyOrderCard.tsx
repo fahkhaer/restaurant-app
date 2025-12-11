@@ -1,7 +1,7 @@
-import CardMenu from '@/components/ui/cardMenu';
 import { ChevronRight } from 'lucide-react';
 import AddQty from '@/components/ui/AddQty';
 import type { ReactNode } from 'react';
+import CardMenu from './ui/custom/CardMenu';
 
 type MyOrderCardProps = {
   rightContent?: string | ReactNode;
