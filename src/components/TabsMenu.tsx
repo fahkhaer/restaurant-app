@@ -1,8 +1,13 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/custom/tabs';
 
 import { Button } from './ui/button';
 import AddQty from './ui/AddQty';
-import CardMenu from './ui/cardMenu';
+import CardMenu from './ui/custom/CardMenu';
 
 function TabsMenu() {
   return (
