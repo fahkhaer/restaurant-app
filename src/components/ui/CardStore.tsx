@@ -9,7 +9,7 @@ type CardProps = {
   rightContent?: ReactNode;
 };
 
-function Card({ store, location, rating, image, rightContent }: CardProps) {
+function CardStore({ store, location, rating, image, rightContent }: CardProps) {
   return (
     <div className='shadow-card flex justify-between p-0 rounded-2xl w-full items-center space-y-4'>
       {/* left side */}
@@ -83,4 +83,4 @@ function Card({ store, location, rating, image, rightContent }: CardProps) {
   );
 }
 
-export default Card;
+export default CardStore;

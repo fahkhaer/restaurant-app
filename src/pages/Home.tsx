@@ -1,5 +1,6 @@
-import Card from '@/components/ui/CardStore';
-import LoadMoreButton from '@/components/ui/loadMoreButton';
+import CardStore from '@/components/ui/CardStore';
+import LoadMoreButton from '@/components/ui/LoadMoreButton';
+
 
 function Home() {
   const filter = [
@@ -31,9 +32,9 @@ function Home() {
       </div>
       <span className='display-md-extrabold'>Recommended</span>
       <div className='flex justify-between gap-10'>
-        <Card />
-        <Card />
-        <Card />
+        <CardStore />
+        <CardStore />
+        <CardStore />
       </div>
       <LoadMoreButton className='mt-[41px]' />
     </section>
