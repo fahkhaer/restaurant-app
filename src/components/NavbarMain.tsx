@@ -19,7 +19,7 @@ function NavbarMain() {
   const cartCount = 3;
   return (
     <div
-      className='fixed w-full flex h-20 px-4 md:px-[120px] justify-between 
+      className='fixed scroll: w-full flex h-20 px-4 md:px-[120px] justify-between 
 items-center'
     >
       {/* logo */}
