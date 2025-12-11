@@ -7,6 +7,7 @@ import { X } from 'lucide-react';
 import AddQty from '@/components/ui/AddQty';
 import CardMenu from '@/components/ui/cardMenu';
 import React from 'react';
+import { Icon } from '@iconify/react';
 
 function Checkout() {
   return (
@@ -62,7 +63,7 @@ function Checkout() {
         </div>
 
         {/* ============== RIGHT SIDE ============== */}
-        <div className='flex-1 md:w-[390px] p-5 shadow-card  rounded-2xl'>
+        <div className='relative flex-1 md:w-[390px] p-5 shadow-card  rounded-2xl'>
           <section>
             {/* Payment Method */}
             <div>
@@ -110,7 +111,17 @@ function Checkout() {
                     {index < arr.length - 1 ? (
                       <hr className='bg-[#DFDFDF] dark:bg-[#252B37] h-px border-0 w-full' />
                     ) : (
-                      <hr className='border-t border-dashed border-[#DFDFDF] w-full' />
+                      <>
+                        <Icon
+                          icon='bxs:circle-half'
+                          className='absolute size-10  text-[#fbfbfb] -translate-x-5 translate-y-17 left-0 bottom-1/2'
+                        />
+                        <hr className='border-t border-dashed border-[#DFDFDF] w-full' />
+                        <Icon
+                          icon='mdi:circle-half'
+                          className='absolute size-10  text-[#fbfbfb] translate-x-5 translate-y-17 right-0 bottom-1/2'
+                        />
+                      </>
                     )}
                   </React.Fragment>
                 ))}
