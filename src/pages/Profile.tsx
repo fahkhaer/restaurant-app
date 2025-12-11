@@ -1,12 +1,13 @@
 import ProfileCard from '@/components/ProfileCard';
 import SideBarProfile from '@/components/SideBarProfile';
+import Container from '@/styles/Container';
 
 function Profile() {
   return (
-    <section className='flex gap-8'>
+    <Container className='flex gap-8'>
       <SideBarProfile />
       <ProfileCard />
-    </section>
+    </Container>
   );
 }
 

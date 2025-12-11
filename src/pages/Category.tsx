@@ -1,11 +1,12 @@
 import { Badge } from '@/components/ui/badge';
-import Card from '@/components/ui/CardStore';
+import CardStore from '@/components/ui/CardStore';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group';
+import Container from '@/styles/Container';
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -34,8 +35,8 @@ const dummyBooks = [
 ];
 function Category() {
   return (
-    <>
-      <h1>All Restaurant</h1>
+    <Container>
+      <h1 className='pb-5'>All Restaurant</h1>
       <section className='flex gap-5 md:pb-[97px]'>
         <div className='w-full shadow-card max-w-[266px] rounded-xl py-4 space-y-6'>
           {/* Category */}
@@ -106,19 +107,19 @@ function Category() {
         <div className='flex gap-4 w-full'>
           {dummyBooks.map((item) => (
             <Link key={item.id} to={`/detail/${item.id}`} className='block'>
-              <Card
+              <CardStore
               //   name={item.title}
               //   author={item.author}
               //   image={item.image}
               //   rating={item.rating}
               />
-              <Card
+              <CardStore
               //   name={item.title}
               //   author={item.author}
               //   image={item.image}
               //   rating={item.rating}
               />
-              <Card
+              <CardStore
               //   name={item.title}
               //   author={item.author}
               //   image={item.image}
@@ -128,7 +129,7 @@ function Category() {
           ))}
         </div>
       </section>
-    </>
+    </Container>
   );
 }
 

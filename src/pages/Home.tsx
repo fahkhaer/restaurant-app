@@ -1,6 +1,6 @@
+import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
 import LoadMoreButton from '@/components/ui/LoadMoreButton';
-
 
 function Home() {
   const filter = [
@@ -12,7 +12,7 @@ function Home() {
     { desc: 'Lunch' },
   ];
   return (
-    <section>
+    <section className='custom-container'>
       <div className='flex justify-between flex-wrap gap-3 my-10'>
         {filter.map((item, i) => (
           <div
@@ -30,8 +30,14 @@ function Home() {
           </div>
         ))}
       </div>
-      <span className='display-md-extrabold'>Recommended</span>
-      <div className='flex justify-between gap-10'>
+      <div className='flex justify-between mb-8 items-center'>
+        <span className='display-md-extrabold'>Recommended </span>
+        <span>
+          <Button variant={'link'}>See All</Button>
+        </span>
+      </div>
+
+      <div className='flex  justify-between gap-10'>
         <CardStore />
         <CardStore />
         <CardStore />

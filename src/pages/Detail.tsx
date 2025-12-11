@@ -3,13 +3,13 @@ import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
 import LoadMoreButton from '@/components/ui/LoadMoreButton';
 import ReviewersCard from '@/components/ui/ReviewersCard';
-
+import Container from '@/styles/Container';
 import { Icon } from '@iconify/react';
 import { Star } from 'lucide-react';
 
 function Detail() {
   return (
-    <section className='space-y-8'>
+    <Container className='space-y-8'>
       {/* images */}
       <div className='flex gap-2.5'>
         <img
@@ -73,7 +73,7 @@ function Detail() {
         </div>
         <LoadMoreButton />
       </div>
-    </section>
+    </Container>
   );
 }
 

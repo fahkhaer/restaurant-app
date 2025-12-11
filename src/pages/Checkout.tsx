@@ -1,13 +1,13 @@
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import Container from '@/styles/Container';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { X } from 'lucide-react';
 import AddQty from '@/components/ui/AddQty';
-import CardMenu from '@/components/ui/cardMenu';
+import CardMenu from '@/components/ui/custom/CardMenu';
 import React from 'react';
 import { Icon } from '@iconify/react';
+import Container from '@/styles/Container';
 
 function Checkout() {
   return (
