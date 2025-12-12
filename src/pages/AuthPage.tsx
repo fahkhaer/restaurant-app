@@ -2,12 +2,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 function AuthPage() {
-  const [showPassword, setShowPassword] = useState(false);
+  const location = useLocation();
+  const defaultTab = useMemo(() => {
+    if (location.pathname.includes('register')) return 'register';
+    return 'login';
+  }, [location.pathname]);
 
+  const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
@@ -36,7 +41,7 @@ function AuthPage() {
           <p className='display-sm-extrabold'>Welcome Back</p>
           <p className='text-md-medium'>Good to see you again! Let’s eat</p>
         </div>
-        <Tabs defaultValue='login'>
+        <Tabs defaultValue={defaultTab}>
           <TabsList className='w-full mb-2 rpunded-2xl h-14 '>
             <TabsTrigger className='w-1/2 ' value='login'>
               Sign in

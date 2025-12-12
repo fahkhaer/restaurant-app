@@ -1,19 +1,50 @@
-import './App.css';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
 import { Provider } from 'react-redux';
-import { store } from './features/store.ts';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import AuthPage from './pages/AuthPage';
+import Success from './pages/Success';
+import { store } from './features/store';
+import AuthLayout from './styles/AuthLayout';
+import Cart from './pages/Cart';
+import Category from './pages/Category';
+import Detail from './pages/Detail';
+import Profile from './pages/Profile';
+import MyOrderPage from './pages/MyOrderPage';
+import MainLayout from './styles/MainLayout';
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            {/* AUTH ROUTES */}
+            <Route element={<AuthLayout />}>
+              <Route path='/login' element={<AuthPage />} />
+              <Route path='/register' element={<AuthPage />} />
+            </Route>
+
+            {/* MAIN PAGE */}
+            <Route path='/' element={<App />} />
+            <Route element={<MainLayout />}>
+              <Route path='/cart' element={<Cart />} />
+              <Route path='/category' element={<Category />} />
+              <Route path='/detail' element={<Detail />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/my-order' element={<MyOrderPage />} />
+              <Route path='/' element={<App />} />
+            </Route>
+
+            {/* STATUS PAGE */}
+            <Route path='/success' element={<Success />} />
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Provider>
+  </React.StrictMode>
 );

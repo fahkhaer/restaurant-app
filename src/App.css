@@ -596,3 +596,10 @@ body {
     @apply font-extrabold text-4xl;
   }
 }
+
+@layer components {
+  .custom-container {
+    margin: 0 auto;
+    @apply max-w-300 ;
+  }
+}
