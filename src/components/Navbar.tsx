@@ -37,6 +37,9 @@ export default function Navbar({
     return () => window.removeEventListener('scroll', onScroll);
   }, [isMain]);
 
+  //fixed
+  const bgFixed = isMain ? (scrolled ? 'fixed' : 'fixed') : '';
+
   // background
   const bgClass = isMain
     ? scrolled
@@ -60,7 +63,7 @@ export default function Navbar({
 
   return (
     <div
-      className={`fixed w-full flex h-20 px-4 md:px-[120px] justify-between items-center transition-all duration-300 ${bgClass}`}
+      className={` w-full flex h-20 px-4 md:px-[120px] justify-between items-center transition-all duration-300 ${bgClass} ${bgFixed} `}
     >
       {/* LOGO */}
       <Link to='/'>
