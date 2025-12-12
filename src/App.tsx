@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <>
-      <Navbar variant='guest' />
+      <Navbar variant='main' />
       <div className="bg-[url('./assets/images/hero.png')] bg-cover w-full text-white flex-center items-center h-screen text-center bg-center">
         <div>
           <div className='flex pb-6 md:pb-10 flex-col gap-2 '>
@@ -23,7 +23,7 @@ function App() {
         </div>
       </div>
       <Home />
-      <Footer/>
+      <Footer />
     </>
   );
 }
