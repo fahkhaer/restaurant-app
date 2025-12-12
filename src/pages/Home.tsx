@@ -12,7 +12,7 @@ function Home() {
     { desc: 'Lunch' },
   ];
   return (
-    <section className='custom-container'>
+    <section className='custom-container mb-25'>
       <div className='flex justify-between flex-wrap gap-3 my-10'>
         {filter.map((item, i) => (
           <div
