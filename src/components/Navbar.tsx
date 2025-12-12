@@ -13,57 +13,61 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/features/store';
 
 type NavbarProps = {
-  variant?: 'guest' | 'main';
-  user?: {
-    role: 'ADMIN' | 'USER';
-    name: string;
-  };
+  variant?: 'main' | 'default';
   cartCount?: number;
 };
 
 export default function Navbar({
-  variant,
-  user = { role: 'USER', name: 'John Doe' },
+  variant = 'default',
   cartCount = 0,
 }: NavbarProps) {
-  const isGuest = variant === 'guest';
+  const user = useAppSelector((s) => s.auth.user);
+  const isGuest = !user;
 
   const [scrolled, setScrolled] = useState(false);
+  const isMain = variant === 'main';
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
+    if (!isMain) return;
+    const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  });
+  }, [isMain]);
+
+  // background
+  const bgClass = isMain
+    ? scrolled
+      ? 'bg-white shadow-card'
+      : 'bg-transparent'
+    : 'bg-white';
+
+  // text color
+  const textColor = isMain
+    ? scrolled
+      ? 'text-neutral-950'
+      : 'text-white'
+    : 'text-neutral-950';
+
+  // logo
+  const logoSrc = isMain
+    ? scrolled
+      ? 'src/assets/icons/logored.png'
+      : 'src/assets/icons/logo.png'
+    : 'src/assets/icons/logored.png';
+
   return (
     <div
-      className={`
-    fixed w-full flex h-20 px-4 md:px-[120px] justify-between items-center transition-all duration-300
-    ${scrolled ? 'bg-white shadow-card' : 'bg-transparent'}
-  `}
+      className={`fixed w-full flex h-20 px-4 md:px-[120px] justify-between items-center transition-all duration-300 ${bgClass}`}
     >
       {/* LOGO */}
       <Link to='/'>
         <div className='size-10 w-fit gap-4 flex'>
-          <img
-            className='h-auto'
-            src={
-              scrolled
-                ? 'src/assets/icons/logored.png'
-                : 'src/assets/icons/logo.png'
-            }
-            alt='Logo'
-          />
-
+          <img className='h-auto' src={logoSrc} alt='Logo' />
           <p
-            className={`hidden md:block items-center display-md-extrabold ${
-              scrolled ? 'text-neutral-950' : 'text-white'
-            }`}
+            className={`hidden md:block items-center display-md-extrabold ${textColor}`}
           >
             Foody
           </p>
@@ -72,36 +76,35 @@ export default function Navbar({
 
       {/* RIGHT SECTION */}
       <div className='flex gap-4 items-center'>
-        {/* ===== ONLY GUEST ===== */}
+        {/* GUEST */}
         {isGuest && (
           <>
+            {' '}
             {/* Cart Mobile */}
             <Link className='lg:hidden block' to='/cart'>
               <div className='relative flex'>
                 <Icon
-                  className='relative text-white'
+                  className={`relative ${textColor}`}
                   icon='lets-icons:bag-fill'
                   width='32'
                   height='32'
                 />
-                <Badge className='absolute hover:bg-red-700 left-5 bg-[#EE1D52] text-white h-5 min-w-5 text-center rounded-[833.33px] tabular-nums p-[6.67px]'>
+                <Badge className='absolute left-5 bg-[#EE1D52] text-white h-5 min-w-5 rounded-full'>
                   1
                 </Badge>
               </div>
             </Link>
-
             {/* Desktop Guest Buttons */}
             <div className='hidden lg:flex gap-4 items-center'>
               <Link to='/login'>
                 <Button
                   variant='outline'
-                  className={`w-[163px] h-12 bg-transparent ${
-                    scrolled ? 'text-[#EE1D52]' : 'text-white'
-                  }`}
+                  className={`w-[163px] h-12 bg-transparent ${textColor}`}
                 >
                   <span className='text-md-bold'>Sign In</span>
                 </Button>
               </Link>
+
               <Link to='/login'>
                 <Button variant='outline' className='w-[163px] h-12 bg-white'>
                   <span className='text-md-bold text-neutral-950'>Sign Up</span>
@@ -111,40 +114,27 @@ export default function Navbar({
           </>
         )}
 
-        {/* ===== ONLY MAIN USER ===== */}
+        {/* MAIN USER */}
         {!isGuest && (
           <>
-            {user.role !== 'ADMIN' && (
-              <Link to='/cart'>
-                <div className='relative flex'>
-                  <Icon
-                    className={`relative ${
-                      scrolled ? 'text-neutral-950' : 'text-white'
-                    }`}
-                    icon='lets-icons:bag-fill'
-                    width='32'
-                    height='32'
-                  />
-                  {cartCount > 0 && (
-                    <Badge className='absolute left-5 bg-[#EE1D52] text-white h-5 min-w-5 text-center rounded-[833.33px] font-mono tabular-nums p-[6.67px]'>
-                      {cartCount}
-                    </Badge>
-                  )}
-                </div>
-              </Link>
-            )}
+            <Link to='/cart'>
+              <div className='relative flex'>
+                <Icon
+                  className={`relative ${textColor}`}
+                  icon='lets-icons:bag-fill'
+                  width='32'
+                  height='32'
+                />
+                {cartCount > 0 && (
+                  <Badge className='absolute left-5 bg-[#EE1D52] text-white h-5 min-w-5 rounded-full'>
+                    {cartCount}
+                  </Badge>
+                )}
+              </div>
+            </Link>
 
             {/* Desktop Username */}
-            <Link
-              to={
-                user.role === 'ADMIN'
-                  ? '/admin'
-                  : user.role === 'USER'
-                  ? '/user'
-                  : '/user'
-              }
-              className='hidden lg:flex gap-4 items-center'
-            >
+            <Link to='/profile' className='hidden lg:flex gap-4 items-center'>
               <Avatar>
                 <AvatarImage
                   className='h-12 rounded-full'
@@ -152,18 +142,13 @@ export default function Navbar({
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <p
-                className={`text-lg-semibold ${
-                  scrolled ? 'text-neutral-950' : 'text-white'
-                } `}
-              >
-                {user.name}
-              </p>
+
+              <p className={`text-lg-semibold ${textColor}`}>{user.name}</p>
             </Link>
           </>
         )}
 
-        {/* DROPDOWN (SAMA UNTUK GUEST & USER) */}
+        {/* DROPDOWN */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
@@ -185,54 +170,53 @@ export default function Navbar({
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                {user.name}
+                {user?.name ?? 'Guest'}
               </DropdownMenuLabel>
 
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem>
-                <MapPin />
-                <span className='text-sm-medium text-neutral-950'>
-                  Delivery Address
-                </span>
-              </DropdownMenuItem>
+              {!isGuest && (
+                <>
+                  <DropdownMenuItem>
+                    <MapPin />
+                    <span className='text-sm-medium text-neutral-950'>
+                      Delivery Address
+                    </span>
+                  </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <Icon icon='akar-icons:file' width='24' height='24' />
-                <span className='text-sm-medium text-neutral-950'>
-                  My Orders
-                </span>
-              </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Icon icon='akar-icons:file' width='24' height='24' />
+                    <span className='text-sm-medium text-neutral-950'>
+                      My Orders
+                    </span>
+                  </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                <Icon
-                  icon='lets-icons:sign-out'
-                  width='20'
-                  height='20'
-                  className='text-white stroke-black fill-black stroke-1'
-                />
-                <span className='text-sm-medium text-neutral-950'>Logout</span>
-              </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Icon icon='lets-icons:sign-out' width='20' height='20' />
+                    <span className='text-sm-medium text-neutral-950'>
+                      Logout
+                    </span>
+                  </DropdownMenuItem>
+                </>
+              )}
             </div>
-
             {/* LOGIN / REGISTER ALWAYS SHOWN */}
-            <div>
-              <DropdownMenuItem asChild>
-                <Link to='/login'>
-                  <Button variant='outline' className='w-full rounded-full'>
-                    Login
-                  </Button>
-                </Link>
-              </DropdownMenuItem>
 
-              <DropdownMenuItem asChild>
-                <Link to='/register'>
-                  <Button variant='secondary' className='w-full rounded-full'>
-                    Register
-                  </Button>
-                </Link>
-              </DropdownMenuItem>
-            </div>
+            <DropdownMenuItem asChild>
+              <Link to='/login'>
+                <Button variant='outline' className='w-full rounded-full'>
+                  Login
+                </Button>
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <Link to='/register'>
+                <Button variant='secondary' className='w-full rounded-full'>
+                  Register
+                </Button>
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
