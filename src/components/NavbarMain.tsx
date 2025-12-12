@@ -18,20 +18,17 @@ function NavbarMain() {
   const username = 'JohnDoe';
   const cartCount = 3;
   return (
-    <div
-      className='fixed scroll: w-full flex h-20 px-4 md:px-[120px] justify-between 
-items-center'
-    >
+    <div className=' bg-white w-full flex h-20 px-4 md:px-[120px] justify-between items-center'>
       {/* logo */}
       <Link to={'/'}>
         <div className='size-10 w-fit gap-4 flex'>
           <img
             className='h-auto'
-            src='src/assets/icons/logo.png'
+            src='src/assets/icons/logored.png'
             alt='Logo-text'
             style={{ width: 'clamp(2.5rem, 3.5vw, 2.63rem)' }}
           />
-          <p className='hidden md:block text-white items-center  display-md-extrabold'>
+          <p className='hidden md:block items-center text-neutral-950 display-md-extrabold'>
             Foody
           </p>
         </div>
@@ -44,7 +41,7 @@ items-center'
           <Link to={'/cart'}>
             <div className='relative flex'>
               <Icon
-                className='relative text-white'
+                className='relative text-neutral-950'
                 icon='lets-icons:bag-fill'
                 width='32'
                 height='32'
@@ -76,7 +73,7 @@ items-center'
               />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p className='text-lg-semibold text-white hidden lg:block'>
+            <p className='text-lg-semibold text-neutral-950 hidden lg:block'>
               {username}
             </p>
           </Link>
