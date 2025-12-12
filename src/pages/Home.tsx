@@ -1,8 +1,16 @@
 import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
 import LoadMoreButton from '@/components/ui/LoadMoreButton';
+import { GetRecomendation } from '@/services/api/restaurants';
+import type { RecommendationItem } from '@/types/recommendation';
 
 function Home() {
+  const { data, isLoading, isError } = GetRecomendation();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+  console.log(data);
+
   const filter = [
     { desc: 'All Restaurant' },
     { desc: 'Nearby' },
@@ -37,10 +45,17 @@ function Home() {
         </span>
       </div>
 
-      <div className='flex  justify-between gap-10'>
-        <CardStore />
-        <CardStore />
-        <CardStore />
+      <div className='flex flex-wrap justify-between gap-10'>
+        {data.map((item: RecommendationItem, i: number) => (
+          <div key={i}>
+            <CardStore
+              name={item?.name}
+              location={item.place}
+              rating={item.star}
+              logo={item.logo}
+            />
+          </div>
+        ))}
       </div>
       <LoadMoreButton className='mt-[41px]' />
     </section>

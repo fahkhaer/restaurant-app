@@ -2,28 +2,28 @@ import { Star } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 type CardProps = {
-  store?: string;
+  name?: string;
   location?: string;
   rating?: number;
-  image?: string | null;
+  logo?: string | null;
   rightContent?: ReactNode;
 };
 
-function CardStore({ store, location, rating, image, rightContent }: CardProps) {
+function CardStore({ name, location, rating, logo, rightContent }: CardProps) {
   return (
     <div className='shadow-card flex justify-between p-0 rounded-2xl w-full items-center space-y-4'>
       {/* left side */}
       <div className='flex w-[370px] gap-3'>
         <img
           className='h-[120px] w-auto rounded-md object-cover'
-          src={image || '/src/assets/images/burger-king.png'}
+          src={logo || '/src/assets/images/burger-king.png'}
           alt='company-logo'
         />
 
         <div className='flex justify-center flex-col gap-1'>
           {/* name */}
           <span className='text-lg-extrabold line-clamp-2'>
-            {store || 'Burger King'}
+            {name || 'Burger King'}
           </span>
           {/* star */}
           <div className='flex gap-1 items-center'>
