@@ -1,20 +1,42 @@
 import MyOrderCard from '@/components/MyOrderCard';
 import GiveReview from '@/components/ui/GiveReview';
 import { Command, CommandInput } from '@/components/ui/command';
-
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from '@/components/ui/custom/tabs';
+import { useMyOrders } from '@/services/api/order';
+import type { Order, OrderStatus } from '@/types/order';
+import { useState } from 'react';
 
 function MyOrderPage() {
+  const [status, setStatus] = useState<OrderStatus>('done');
+
+  const { data, isLoading, isError } = useMyOrders(status);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+
+  const handleStatusChange = (value: string) => {
+    const validStatuses: OrderStatus[] = [
+      'preparing',
+      'on_the_way',
+      'delivered',
+      'done',
+      'cancelled',
+    ];
+    if (validStatuses.includes(value as OrderStatus)) {
+      setStatus(value as OrderStatus);
+    }
+  };
+
   return (
     <div className='flex-1 shadow-card p-6 space-y-5 rounded-2xl'>
       <h1>My Orders</h1>
       <div className='w-full md:w-[600px]'>
-        <Command className='h-12 rounded-full justify-center border border-neutral-300 gap-2  md:min-w-[500px]'>
+        <Command className='h-12 rounded-full justify-center border border-neutral-300 gap-2 md:min-w-[500px]'>
           <CommandInput
             className='text-neutral-600 text-sm'
             placeholder='Search book'
@@ -22,66 +44,40 @@ function MyOrderPage() {
         </Command>
       </div>
 
-      {/* tabs */}
-      <Tabs defaultValue='preparing'>
+      <Tabs defaultValue='done' onValueChange={handleStatusChange}>
         <TabsList className='w-fit pt-0 pb-5 justify-start gap-3'>
           <span className='text-lg-bold text-[#0A0D12]'>Status</span>
 
-          <TabsTrigger value='preparing' className='text-md-semibold '>
-            Preparing
-          </TabsTrigger>
-          <TabsTrigger value='otw' className='text-md-semibold '>
-            On The Way
-          </TabsTrigger>
-          <TabsTrigger value='delivered' className='text-md-semibold '>
-            Delivered
-          </TabsTrigger>
-          <TabsTrigger value='done' className='text-md-semibold '>
-            Done
-          </TabsTrigger>
-          <TabsTrigger value='canceled' className='text-md-semibold '>
-            Canceled
-          </TabsTrigger>
+          <TabsTrigger value='preparing'>Preparing</TabsTrigger>
+          <TabsTrigger value='on_the_way'>On The Way</TabsTrigger>
+          <TabsTrigger value='delivered'>Delivered</TabsTrigger>
+          <TabsTrigger value='done'>Done</TabsTrigger>
+          <TabsTrigger value='cancelled'>Cancelled</TabsTrigger>
         </TabsList>
 
-        {/* tab content */}
-        <TabsContent
-          value='preparing'
-          className='flex flex-col mt-0 divide-neutral-300'
-        >
-          <MyOrderCard rightContent={<GiveReview />} />
-
-          {/* <p className='text-center text-neutral-500 py-6'>
-            No preparing loans found.
-          </p> */}
-        </TabsContent>
-
-        <TabsContent
-          value='otw'
-          className='flex flex-col mt-0 divide-neutral-300'
-        >
-          <p className='text-center text-neutral-500 py-6'>
-            No otw loans found.
-          </p>
-        </TabsContent>
-
-        <TabsContent
-          value='delivered'
-          className='flex flex-col mt-0 divide-neutral-300'
-        >
-          <p className='text-center text-neutral-500 py-6'>
-            No delivered loans found.
-          </p>
-        </TabsContent>
-
-        <TabsContent
-          value='done'
-          className='flex flex-col mt-0 divide-neutral-300'
-        >
-          <p className='text-center text-neutral-500 py-6'>
-            No done loans found.
-          </p>
-        </TabsContent>
+        {['preparing', 'on_the_way', 'delivered', 'done', 'cancelled'].map(
+          (tab) => (
+            <TabsContent
+              key={tab}
+              value={tab}
+              className='flex flex-col mt-0 divide-neutral-300'
+            >
+              {(data?.orders?.length ?? 0) > 0 ? (
+                data?.orders?.map((order: Order) => (
+                  <MyOrderCard
+                    key={order.id}
+                    order={order}
+                    rightContent={<GiveReview />}
+                  />
+                ))
+              ) : (
+                <p className='text-center text-neutral-500 py-6'>
+                  No {tab.replace('_', ' ')} order found.
+                </p>
+              )}
+            </TabsContent>
+          )
+        )}
       </Tabs>
     </div>
   );

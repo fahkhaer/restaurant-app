@@ -80,10 +80,11 @@ function SideBarProfile() {
         </div>
 
         <div className='flex'>
+          {/* profile */}
           <TabsContent value='profile'>
             <ProfileCard />
           </TabsContent>
-
+          {/* delivery address */}
           <TabsContent value='address' className='m-0 w-full '>
             <div className='shadow-card w-3xl rounded-2xl space-y-5 p-5 '>
               <div className='flex items-center gap-2'>
@@ -104,11 +105,11 @@ function SideBarProfile() {
               </Button>
             </div>
           </TabsContent>
-
+          {/* my order */}
           <TabsContent className='m-0' value='my-order'>
             <MyOrderPage />
           </TabsContent>
-
+          {/* logout */}
           <TabsContent value='logout' />
         </div>
       </Tabs>
