@@ -37,24 +37,34 @@ function TabsMenu({ menu }: TabsMenuCardProps) {
         ))}
       </TabsContent>
 
-      <TabsContent value='food'>
-        {/* <CardMenu
-          name={name}
-          className='shadow-card w-1/5'
-          price={priceStr}
-          image={image}
-          rightContent={<AddQty />}
-        /> */}
+      <TabsContent className='flex mt-6 flex-wrap gap-5' value='food'>
+        {menu
+          ?.filter((item) => item.type === 'food')
+          .map((item) => (
+            <CardMenu
+              key={item.id}
+              name={item.foodName ?? 'No food name'}
+              price={item.price ? `Rp ${item.price.toLocaleString()}` : 'Rp 0'}
+              image={item.image ?? errorImg}
+              className='shadow-card basis-[calc(25%-16px)]'
+              rightContent={<Button className='w-[79px]'>Add</Button>}
+            />
+          ))}
       </TabsContent>
 
-      <TabsContent value='drink'>
-        <CardMenu
-          name='Burger'
-          className='shadow-card w-1/5'
-          price='50rb'
-          image='./src/assets/images/price.png'
-          rightContent={<AddQty />}
-        />
+      <TabsContent className='flex mt-6 flex-wrap gap-5' value='drink'>
+        {menu
+          ?.filter((item) => item.type === 'drink')
+          .map((item) => (
+            <CardMenu
+              key={item.id}
+              name={item.foodName ?? 'No food name'}
+              price={item.price ? `Rp ${item.price.toLocaleString()}` : 'Rp 0'}
+              image={item.image ?? errorImg}
+              className='shadow-card basis-[calc(25%-16px)]'
+              rightContent={<AddQty />}
+            />
+          ))}
       </TabsContent>
     </Tabs>
   );
