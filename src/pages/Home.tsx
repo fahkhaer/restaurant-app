@@ -4,6 +4,7 @@ import LoadMoreButton from '@/components/ui/LoadMoreButton';
 import { getDistanceKm } from '@/lib/utils/distance';
 import { GetRecomendation } from '@/services/api/restaurants';
 import type { RecommendationItem } from '@/types/restaurant';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const { data, isLoading, isError } = GetRecomendation();
@@ -61,7 +62,7 @@ function Home() {
               : undefined;
 
           return (
-            <div key={i}>
+            <Link key={i} to={`/detail/${item?.id}`}>
               <CardStore
                 name={item.name}
                 location={item.place}
@@ -69,7 +70,7 @@ function Home() {
                 logo={item.logo}
                 coordinate={distanceKm}
               />
-            </div>
+            </Link>
           );
         })}
       </div>

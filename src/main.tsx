@@ -32,9 +32,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             {/* MAIN PAGE */}
             <Route path='/' element={<App />} />
             <Route element={<MainLayout />}>
+              <Route path='/detail/:id' element={<Detail />} />
               <Route path='/cart' element={<Cart />} />
               <Route path='/category' element={<Category />} />
-              <Route path='/detail' element={<Detail />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/my-order' element={<MyOrderPage />} />
               <Route path='/' element={<App />} />

@@ -10,9 +10,11 @@ import { Star } from 'lucide-react';
 import errorImg from '@/assets/images/image-off.png';
 import { getDistanceKm } from '@/lib/utils/distance';
 import type { Review } from '@/types/reviews';
+import { useParams } from 'react-router-dom';
 
 function Detail() {
-  const { data, isLoading, isError } = GetDetail();
+const { id } = useParams<{ id: string }>();
+  const { data, isLoading, isError } = GetDetail(id);
 
   //coordinate
   const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum

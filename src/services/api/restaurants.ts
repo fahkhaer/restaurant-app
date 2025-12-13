@@ -20,12 +20,13 @@ export function GetRecomendation() {
   });
 }
 
-export function GetDetail() {
+export function GetDetail(id?: string) {
   return useQuery({
-    queryKey: ['detail'],
+    queryKey: ['detail', id],
+    enabled: !!id,
     queryFn: async () => {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`${baseUrl}/api/resto/293`, {
+      const res = await axios.get(`${baseUrl}/api/resto/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
