@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 
-// Routing
-
 function SideBarProfile() {
   const location = useLocation();
   const defaultTab = useMemo(() => {
