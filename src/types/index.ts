@@ -8,7 +8,7 @@ export type MenuItem = {
   createdAt?: string;
 };
 export type CartItem = {
-  id: string; // menu id
+  id: string;
   name: string;
   price: number;
   qty: number;
