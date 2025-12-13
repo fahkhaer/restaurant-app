@@ -8,7 +8,7 @@ type CardProps = {
   logo?: string | null;
   coordinate?: number;
   rightContent?: ReactNode;
-  className: string;
+  className?: string;
 };
 
 function CardStore({
@@ -20,8 +20,6 @@ function CardStore({
   rightContent,
   className,
 }: CardProps) {
-
-  
   return (
     <div
       className={`shadow-card flex justify-between p-0 rounded-2xl w-full items-center space-y-4 ${
@@ -31,7 +29,7 @@ function CardStore({
       {/* left side */}
       <div className='flex w-[370px] gap-3'>
         <img
-          className='h-[120px] w-auto rounded-md object-cover'
+          className='size-[120px] rounded-md object-cover'
           src={logo || '/src/assets/images/burger-king.png'}
           alt='company-logo'
         />
@@ -49,7 +47,9 @@ function CardStore({
             {location || 'unknown location'} •{' '}
             {coordinate == null || isNaN(coordinate)
               ? 'unknown km'
-              : coordinate.toFixed(1)}
+              : coordinate < 1
+              ? `${Math.round(coordinate * 1000)} m`
+              : `${coordinate.toFixed(1)} km`}
           </span>
         </div>
       </div>

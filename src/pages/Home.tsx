@@ -1,15 +1,18 @@
 import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
 import LoadMoreButton from '@/components/ui/LoadMoreButton';
+import { getDistanceKm } from '@/lib/utils/distance';
 import { GetRecomendation } from '@/services/api/restaurants';
 import type { RecommendationItem } from '@/types/restaurant';
 
 function Home() {
   const { data, isLoading, isError } = GetRecomendation();
 
+  //coordinate
+  const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
-
 
   const filter = [
     { desc: 'All Restaurant' },
@@ -46,16 +49,29 @@ function Home() {
       </div>
 
       <div className='flex flex-wrap justify-between gap-10'>
-        {data.map((item: RecommendationItem, i: number) => (
-          <div key={i}>
-            <CardStore
-              name={item?.name}
-              location={item.place}
-              rating={item.star}
-              logo={item.logo}
-            />
-          </div>
-        ))}
+        {data.map((item: RecommendationItem, i: number) => {
+          const distanceKm =
+            item.lat != null && item.long != null
+              ? getDistanceKm(
+                  userLocation.lat,
+                  userLocation.long,
+                  item.lat,
+                  item.long
+                )
+              : undefined;
+
+          return (
+            <div key={i}>
+              <CardStore
+                name={item.name}
+                location={item.place}
+                rating={item.star}
+                logo={item.logo}
+                coordinate={distanceKm}
+              />
+            </div>
+          );
+        })}
       </div>
       <LoadMoreButton className='mt-[41px]' />
     </section>

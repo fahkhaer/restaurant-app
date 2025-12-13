@@ -14,3 +14,12 @@ export function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: nu
 
   return R * c;
 }
+
+export function formatDistanceFromKm(km: number) {
+  if (km < 1) {
+    return `${Math.round(km * 1000)} m`;
+  }
+
+  return `${km.toFixed(1)} km`;
+}
+

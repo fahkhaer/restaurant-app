@@ -13,7 +13,6 @@ import type { Review } from '@/types/reviews';
 
 function Detail() {
   const { data, isLoading, isError } = GetDetail();
-  console.log(data);
 
   //coordinate
   const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum
