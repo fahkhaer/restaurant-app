@@ -3,14 +3,22 @@ import { Icon } from '@iconify/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MapPin } from 'lucide-react';
 import MyOrderPage from '@/pages/MyOrderPage';
-import ProfileCard from './ProfileCard';
-import { Button } from './ui/button';
 import Container from '@/styles/Container';
+import ProfileCard from '@/components/ProfileCard';
+import { Button } from '@/components/ui/button';
+import { useLocation } from 'react-router-dom';
+import { useMemo } from 'react';
+
+// Routing
 
 function SideBarProfile() {
+  const location = useLocation();
+  const defaultTab = useMemo(() => {
+    return location.pathname.includes('my-order') ? 'my-order' : 'profile';
+  }, [location.pathname]);
   return (
     <Container className='mb-25'>
-      <Tabs defaultValue='profile' className='md:w-60 flex gap-8'>
+      <Tabs defaultValue={defaultTab} className='md:w-60 flex gap-8'>
         <div className='h-[274px] space-y-2 shadow-card p-5 rounded-2xl'>
           {/* User */}
           <TabsList className='flex bg-transparent p-0 justify-between '>
@@ -46,7 +54,7 @@ function SideBarProfile() {
             </TabsTrigger>
 
             <TabsTrigger
-              value='orders'
+              value='my-order'
               className='
               flex w-full justify-start gap-2 p-2
               rounded-md
@@ -97,7 +105,7 @@ function SideBarProfile() {
             </div>
           </TabsContent>
 
-          <TabsContent className='m-0' value='orders'>
+          <TabsContent className='m-0' value='my-order'>
             <MyOrderPage />
           </TabsContent>
 

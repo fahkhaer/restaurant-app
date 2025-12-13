@@ -12,7 +12,7 @@ import Cart from './pages/Cart';
 import Category from './pages/Category';
 import Detail from './pages/Detail';
 import MainLayout from './styles/MainLayout';
-import SideBarProfile from './components/SideBarProfile';
+import SideBarProfile from './pages/SideBarProfile';
 
 const queryClient = new QueryClient();
 
