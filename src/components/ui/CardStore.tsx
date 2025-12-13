@@ -6,12 +6,28 @@ type CardProps = {
   location?: string;
   rating?: number;
   logo?: string | null;
+  coordinate?: number;
   rightContent?: ReactNode;
+  className: string;
 };
 
-function CardStore({ name, location, rating, logo, rightContent }: CardProps) {
+function CardStore({
+  name,
+  location,
+  rating,
+  coordinate,
+  logo,
+  rightContent,
+  className,
+}: CardProps) {
+
+  
   return (
-    <div className='shadow-card flex justify-between p-0 rounded-2xl w-full items-center space-y-4'>
+    <div
+      className={`shadow-card flex justify-between p-0 rounded-2xl w-full items-center space-y-4 ${
+        className || ''
+      }`}
+    >
       {/* left side */}
       <div className='flex w-[370px] gap-3'>
         <img
@@ -19,7 +35,6 @@ function CardStore({ name, location, rating, logo, rightContent }: CardProps) {
           src={logo || '/src/assets/images/burger-king.png'}
           alt='company-logo'
         />
-
         <div className='flex justify-center flex-col gap-1'>
           {/* name */}
           <span className='text-lg-extrabold line-clamp-2'>
@@ -31,7 +46,10 @@ function CardStore({ name, location, rating, logo, rightContent }: CardProps) {
             <span className='text-md-medium ml-1'>{rating ?? '4.9'}</span>
           </div>
           <span className='text-md-regular'>
-            {location || 'Jakarta Selatan •  2.4 km'}
+            {location || 'unknown location'} •{' '}
+            {coordinate == null || isNaN(coordinate)
+              ? 'unknown km'
+              : coordinate.toFixed(1)}
           </span>
         </div>
       </div>
