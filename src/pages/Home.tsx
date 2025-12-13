@@ -2,14 +2,14 @@ import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
 import LoadMoreButton from '@/components/ui/LoadMoreButton';
 import { GetRecomendation } from '@/services/api/restaurants';
-import type { RecommendationItem } from '@/types/recommendation';
+import type { RecommendationItem } from '@/types/restaurant';
 
 function Home() {
   const { data, isLoading, isError } = GetRecomendation();
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
-  console.log(data);
+
 
   const filter = [
     { desc: 'All Restaurant' },

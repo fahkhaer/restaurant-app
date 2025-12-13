@@ -16,7 +16,6 @@ export function useLogin() {
     },
 
     onSuccess: (data) => {
-      console.log(data);
 
       dispatch(setToken(data.token));
       dispatch(setUser(data.user));

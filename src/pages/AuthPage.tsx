@@ -38,8 +38,6 @@ function AuthPage() {
 
     loginMutation.mutate(payload, {
       onSuccess: (data) => {
-        console.log(data);
-
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.user.name);
         localStorage.setItem('email', data.user.email);
