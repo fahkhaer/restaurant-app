@@ -7,7 +7,10 @@ import type { Review } from '@/types/reviews';
 dayjs.locale('id');
 interface ReviewersCardProps {
   review?: Review;
+
 }
+
+
 
 export default function ReviewersCard({ review }: ReviewersCardProps) {
   const userName = review?.user?.name ?? 'Unknown User';
@@ -16,7 +19,7 @@ export default function ReviewersCard({ review }: ReviewersCardProps) {
   const date = review?.createdAt
     ? dayjs(review.createdAt).format('DD MMMM YYYY, HH:mm')
     : 'Tanggal tidak tersedia';
-  const avatarUrl = 'https://github.com/shadcn.png';
+  const avatarUrl = review?.user?.avatar || 'https://github.com/shadcn.png';
 
   return (
     <div className='shadow-card bg-white flex flex-col rounded-2xl basis-full md:basis-[calc(50%-0.625rem)] gap-4 p-4'>
@@ -24,7 +27,7 @@ export default function ReviewersCard({ review }: ReviewersCardProps) {
       <div className='flex gap-3 h-16 items-center'>
         <Avatar className='size-16'>
           <AvatarImage
-            className='rounded-full'
+            className='rounded-full object-cover'
             src={avatarUrl}
             alt={userName}
           />

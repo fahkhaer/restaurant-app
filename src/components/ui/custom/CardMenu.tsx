@@ -27,14 +27,14 @@ function CardMenu({
       {variant === 'default' && (
         <div className={cn('rounded-2xl', className)} style={style}>
           <img
-            className='size-[285px] rounded-t-2xl'
+            className='size-[285px] object-cover rounded-t-2xl'
             src={image || './src/assets/images/price.png'}
             alt='food-menu'
           />
           <div className='flex-between p-3 md:p-4'>
             <div>
               <span className='text-md-medium'>{name}</span>
-              <h1 className='text-lg-extrabold'>Rp.{price}</h1>
+              <h1 className='text-lg-extrabold'>{price}</h1>
             </div>
             {rightContent}
           </div>

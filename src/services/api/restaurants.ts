@@ -19,3 +19,22 @@ export function GetRecomendation() {
     refetchOnReconnect: true,
   });
 }
+
+export function GetDetail() {
+  return useQuery({
+    queryKey: ['detail'],
+    queryFn: async () => {
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${baseUrl}/api/resto/293`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data.data);
+
+      return res.data.data;
+    },
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+  });
+}
