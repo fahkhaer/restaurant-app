@@ -7,10 +7,7 @@ import type { Review } from '@/types/reviews';
 dayjs.locale('id');
 interface ReviewersCardProps {
   review?: Review;
-
 }
-
-
 
 export default function ReviewersCard({ review }: ReviewersCardProps) {
   const userName = review?.user?.name ?? 'Unknown User';

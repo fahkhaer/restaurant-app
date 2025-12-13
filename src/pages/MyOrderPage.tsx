@@ -15,7 +15,7 @@ function MyOrderPage() {
   const [status, setStatus] = useState<OrderStatus>('done');
 
   const { data, isLoading, isError } = useMyOrders(status);
-
+  console.log(data);
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
 
@@ -60,7 +60,7 @@ function MyOrderPage() {
             <TabsContent
               key={tab}
               value={tab}
-              className='flex flex-col mt-0 divide-neutral-300'
+              className='flex flex-col mt-0 space-y-5 divide-neutral-300'
             >
               {(data?.orders?.length ?? 0) > 0 ? (
                 data?.orders?.map((order: Order) => (
