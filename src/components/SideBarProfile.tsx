@@ -1,52 +1,110 @@
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Icon } from '@iconify/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MapPin } from 'lucide-react';
+import MyOrderPage from '@/pages/MyOrderPage';
+import ProfileCard from './ProfileCard';
+import { Button } from './ui/button';
+import Container from '@/styles/Container';
 
 function SideBarProfile() {
   return (
-    <>
-      <div className='hidden md:block h-[274px] space-y-2 md:w-60 shadow-card p-5 rounded-2xl'>
-        {/* User */}
-        <div className='flex items-center gap-2'>
-          <Avatar>
-            <AvatarImage
-              className='w-30 size-12 object-cover rounded-full'
-              src='https://github.com/shadcn.png'
-            />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <span className='text-lg-bold'>John Doe</span>
+    <Container className='mb-25'>
+      <Tabs defaultValue='profile' className='md:w-60 flex gap-8'>
+        <div className='h-[274px] space-y-2 shadow-card p-5 rounded-2xl'>
+          {/* User */}
+          <TabsList className='flex bg-transparent p-0 justify-between '>
+            <TabsTrigger
+              value='profile'
+              className='flex bg-transparent p-0 gap-2 data-[state=active]:border-none  data-[state=active]:shadow-none data-[state=active]:bg-none w-full justify-start'
+            >
+              <Avatar>
+                <AvatarImage
+                  className='size-12 object-cover rounded-full'
+                  src='https://github.com/shadcn.png'
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className='text-lg-bold'>John Doe</span>
+            </TabsTrigger>
+          </TabsList>
+          <hr className='bg-neutral-200 my-6' />
+
+          {/* Tabs */}
+          <TabsList className='flex flex-col space-y-2 mt-18 bg-transparent p-0 gap-2'>
+            <TabsTrigger
+              value='address'
+              className='
+              flex w-full justify-start gap-2 p-2
+              rounded-md
+              hover:bg-neutral-100
+              data-[state=active]:bg-neutral-100
+              data-[state=active]:text-[#C12116]'
+            >
+              <MapPin className='size-6 shrink-0' />
+              <span className='text-md-medium'>Delivery Address</span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value='orders'
+              className='
+              flex w-full justify-start gap-2 p-2
+              rounded-md
+              hover:bg-neutral-100
+              data-[state=active]:bg-neutral-100
+              data-[state=active]:text-[#C12116]'
+            >
+              <Icon icon='akar-icons:file' width='24' height='24' />
+              <span className='text-md-medium'>My Orders</span>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value='logout'
+              className='
+              flex w-full justify-start gap-2 p-2
+              rounded-md
+              hover:bg-neutral-100'
+            >
+              <Icon icon='lets-icons:sign-out' width='24' height='24' />
+              <span className='text-md-medium'>Logout</span>
+            </TabsTrigger>
+          </TabsList>
         </div>
 
-        {/* Separator */}
-        <hr className='bg-neutral-200 my-6' />
+        <div className='flex'>
+          <TabsContent value='profile'>
+            <ProfileCard />
+          </TabsContent>
 
-        {/* List */}
-        <div className='flex items-center gap-2 mb-2 p-2 cursor-pointer hover:bg-neutral-100 rounded-md'>
-          <MapPin className='size-6' />
-          <span className='text-md-medium'>Delivery Address</span>
-        </div>
+          <TabsContent value='address' className='m-0 w-full '>
+            <div className='shadow-card w-3xl rounded-2xl space-y-5 p-5 '>
+              <div className='flex items-center gap-2'>
+                <img
+                  className='size-8 rounded-t-2xl'
+                  src='./src/assets/icons/map-logo.png'
+                  alt='map-logo'
+                />
+                <span className='text-lg-extrabold'>Delivery Address</span>
+              </div>
+              <div className='text-md-medium'>
+                Jl. Sudirman No. 25, Jakarta Pusat, 10220
+                <p>0812-3456-7890</p>
+              </div>
 
-        <div className='flex text-[#C12116] items-center gap-2 p-2 cursor-pointer hover:bg-neutral-100 rounded-md'>
-          <Icon icon='akar-icons:file' width='24' height='24' />
-          <span className='text-md-medium'>My Orders</span>
-        </div>
+              <Button className='w-30' variant={'outline'}>
+                Change
+              </Button>
+            </div>
+          </TabsContent>
 
-        <div className='flex items-center gap-2 p-2 cursor-pointer hover:bg-neutral-100 rounded-md'>
-          <Icon
-            className='text-white stroke-black stroke-1.5'
-            icon='lets-icons:sign-out'
-            width='24'
-            height='24'
-          />
-          <span className='text-md-medium'>Logout</span>
+          <TabsContent className='m-0' value='orders'>
+            <MyOrderPage />
+          </TabsContent>
+
+          <TabsContent value='logout' />
         </div>
-      </div>
-      {/* mobile ver */}
-      <div className='md:hidden border-t-2 flex justify-between fixed items-center w-full left-0 bottom-0 shadow-card p-4 bg-white'>
-        jkdsh
-      </div>
-    </>
+      </Tabs>
+    </Container>
   );
 }
 

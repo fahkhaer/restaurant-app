@@ -11,9 +11,8 @@ import AuthLayout from './styles/AuthLayout';
 import Cart from './pages/Cart';
 import Category from './pages/Category';
 import Detail from './pages/Detail';
-import Profile from './pages/Profile';
-import MyOrderPage from './pages/MyOrderPage';
 import MainLayout from './styles/MainLayout';
+import SideBarProfile from './components/SideBarProfile';
 
 const queryClient = new QueryClient();
 
@@ -35,8 +34,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path='/detail/:id' element={<Detail />} />
               <Route path='/cart' element={<Cart />} />
               <Route path='/category' element={<Category />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/my-order' element={<MyOrderPage />} />
+              <Route path='/profile' element={<SideBarProfile />} />
+              <Route path='/my-order' element={<SideBarProfile />} />
               <Route path='/' element={<App />} />
             </Route>
 

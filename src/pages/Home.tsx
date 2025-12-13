@@ -18,7 +18,7 @@ function Home() {
   const filter = [
     { desc: 'All Restaurant' },
     { desc: 'Nearby' },
-    { desc: 'Discount' },
+    { desc: 'Best Seller' },
     { desc: 'Category' },
     { desc: 'Delivery' },
     { desc: 'Lunch' },
