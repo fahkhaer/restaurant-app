@@ -29,7 +29,7 @@ export default function CartCard({ order, rightContent }: MyOrderCardProps) {
           const menu = item.menu.foodName ?? 'unknown';
           const qty = item.quantity;
           const price = item.itemTotal;
-          const img = item.menu.image ?? '/src/assets/images/price.png';
+          const img = item.menu.image ?? '/src/assets/images/image-off.png';
           return (
             <>
               <CardMenu
@@ -39,7 +39,15 @@ export default function CartCard({ order, rightContent }: MyOrderCardProps) {
                 name={menu}
                 price={price?.toString()}
                 image={img}
-                rightContent={<AddQty />}
+                rightContent={
+                  <AddQty
+                    quantity={qty}
+                    onChange={(newQty) => {
+                      console.log('New quantity:', newQty);
+                      //naro API
+                    }}
+                  />
+                }
               />
               <div>
                 <span className='text-md-medium'>
