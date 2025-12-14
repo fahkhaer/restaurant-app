@@ -100,13 +100,14 @@ function Detail() {
         }
       />
       <hr className='w-full bg-neutral-300' />
-      {/* menu */}
+
+      {/* MENU */}
       {alert && <DataAlert type={alert.type} message={alert.message} />}
       <div>
         <h1 className='mb-6'>Menu</h1>
         {/* content Menus */}
         {data?.menus?.length ? (
-          <TabsMenu menu={data?.menus} setAlert={setAlert} />
+          <TabsMenu restaurantId={data.id} menu={data?.menus} setAlert={setAlert} />
         ) : (
           <p className='text-md-regular text-neutral-500'>Sold menu</p>
         )}

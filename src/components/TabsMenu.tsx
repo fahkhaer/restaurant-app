@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 
 interface TabsMenuCardProps {
   menu?: Menu[];
-
+  restaurantId: number;
   setAlert: React.Dispatch<
     React.SetStateAction<{
       type: 'success' | 'error';
@@ -23,25 +23,31 @@ interface TabsMenuCardProps {
   >;
 }
 
-function TabsMenu({ menu, setAlert }: TabsMenuCardProps) {
+function TabsMenu({ menu, restaurantId, setAlert }: TabsMenuCardProps) {
   const addToCart = useAddToCart();
 
   // alert handler
   useEffect(() => {
-    if (addToCart.isSuccess) {
+    if (addToCart.isSuccess && addToCart.data?.message) {
       setAlert({
         type: 'success',
-        message: addToCart.data?.message,
+        message: addToCart.data.message,
       });
     }
 
-    if (addToCart.isError) {
+    if (addToCart.isError && addToCart.error) {
       setAlert({
         type: 'error',
         message: addToCart.error.message,
       });
     }
-  }, [addToCart.isSuccess, addToCart.isError]);
+  }, [
+    addToCart.isSuccess,
+    addToCart.isError,
+    addToCart.data?.message,
+    addToCart.error,
+    setAlert,
+  ]);
 
   return (
     <Tabs defaultValue='all-menu'>
@@ -70,7 +76,7 @@ function TabsMenu({ menu, setAlert }: TabsMenuCardProps) {
                     console.log('CLICKED ITEM:', item);
 
                     addToCart.mutate({
-                      restaurantId: 293,
+                      restaurantId,
                       menuId: item.id,
                       quantity: 1,
                     });
@@ -100,8 +106,8 @@ function TabsMenu({ menu, setAlert }: TabsMenuCardProps) {
                   disabled={addToCart.isPending}
                   onClick={() =>
                     addToCart.mutate({
-                      restaurantId: 293,
-                      menuId: 1325,
+                      restaurantId,
+                      menuId: item.id,
                       quantity: 1,
                     })
                   }
@@ -129,7 +135,7 @@ function TabsMenu({ menu, setAlert }: TabsMenuCardProps) {
                   disabled={addToCart.isPending}
                   onClick={() =>
                     addToCart.mutate({
-                      restaurantId: 293,
+                      restaurantId,
                       menuId: item.id,
                       quantity: 1,
                     })
