@@ -1,11 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import CardMenu from '@/components/ui/custom/CardMenu';
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import Container from '@/styles/Container';
 import { Link, useLocation } from 'react-router-dom';
 import type { CartRestaurant } from '@/types/cart';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 function Checkout() {
   const location = useLocation();
@@ -13,12 +15,15 @@ function Checkout() {
 
   const totalItems =
     order?.items?.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
-    
+
   const subtotal =
     order?.items?.reduce((acc, item) => acc + item.itemTotal, 0) ?? 0;
   const deliveryFee = 10000;
   const serviceFee = 1000;
   const total = subtotal + deliveryFee + serviceFee;
+
+  const [notes, setNotes] = useState('');
+
   return (
     <Container className='mb-25'>
       <h1 className='pb-6'>Checkout</h1>
@@ -77,6 +82,19 @@ function Checkout() {
                 />
               </div>
             ))}
+          </div>
+
+          {/* Notes */}
+          <div className='shadow-card rounded-2xl flex flex-col p-5 gap-3'>
+            <Label htmlFor='notes' className='text-lg-extrabold'>
+              Notes
+            </Label>
+            <Input
+              id='notes'
+              placeholder='Add a note for your order...'
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
           </div>
         </div>
 
