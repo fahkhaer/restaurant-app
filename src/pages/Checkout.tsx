@@ -1,18 +1,25 @@
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import CardMenu from '@/components/ui/custom/CardMenu';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import Container from '@/styles/Container';
 import { Link, useLocation } from 'react-router-dom';
 import type { CartRestaurant } from '@/types/cart';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { GetProfile } from '@/services/api/profile';
 
 function Checkout() {
+  const { data } = GetProfile();
+
   const location = useLocation();
   const order = location.state?.order as CartRestaurant;
 
+  useEffect(() => {
+    if (data) {
+      setPhone(data.phone ?? '');
+    }
+  }, [data]);
   const totalItems =
     order?.items?.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
 
@@ -23,6 +30,8 @@ function Checkout() {
   const total = subtotal + deliveryFee + serviceFee;
 
   const [notes, setNotes] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
 
   return (
     <Container className='mb-25'>
@@ -32,23 +41,30 @@ function Checkout() {
         <div className='flex-1 space-y-8'>
           {/* Delivery Address */}
           <div className='shadow-card rounded-2xl flex flex-col p-5 gap-5'>
-            <div>
-              <div className='flex gap-2'>
-                <img
-                  className='size-8 rounded-t-2xl'
-                  src='./src/assets/icons/map-logo.png'
-                  alt='map-logo'
-                />
-                <span className='text-lg-extrabold'>Delivery Address</span>
-              </div>
-              <div className='text-md-medium'>
-                Jl. Sudirman No. 25, Jakarta Pusat, 10220
-                <p>0812-3456-7890</p>
-              </div>
+            <div className='flex gap-2'>
+              <img
+                className='size-8 rounded-t-2xl'
+                src='./src/assets/icons/map-logo.png'
+                alt='map-logo'
+              />
+              <span className='text-lg-extrabold'>Delivery Address</span>
             </div>
-            <Button className='w-30' variant={'outline'}>
-              Change
-            </Button>
+
+            <div className=' space-y-2'>
+              <Input
+                className='text-md-medium '
+                id='address'
+                placeholder='Jl. Sudirman No. 25, Jakarta Pusat, 10220'
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              <Input
+                className='text-md-medium text-neutral-500'
+                id='phone'
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* Orders */}
@@ -86,9 +102,7 @@ function Checkout() {
 
           {/* Notes */}
           <div className='shadow-card rounded-2xl flex flex-col p-5 gap-3'>
-            <Label htmlFor='notes' className='text-lg-extrabold'>
-              Notes
-            </Label>
+            <span className='text-lg-extrabold'>Notes</span>
             <Input
               id='notes'
               placeholder='Add a note for your order...'
