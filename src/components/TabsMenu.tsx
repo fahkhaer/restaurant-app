@@ -59,7 +59,6 @@ function TabsMenu({ menu, restaurantId, setAlert }: TabsMenuCardProps) {
       {/* all menus */}
       <TabsContent className='flex mt-6 flex-wrap gap-5' value='all-menu'>
         {menu?.map((item) => {
-          console.log('ITEM MENU:', item);
 
           return (
             <CardMenu
@@ -73,7 +72,6 @@ function TabsMenu({ menu, restaurantId, setAlert }: TabsMenuCardProps) {
                   className='w-[79px] hover:cursor-pointer'
                   disabled={addToCart.isPending}
                   onClick={() => {
-                    console.log('CLICKED ITEM:', item);
 
                     addToCart.mutate({
                       restaurantId,
