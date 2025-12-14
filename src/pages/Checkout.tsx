@@ -1,17 +1,26 @@
-import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-
-import { X } from 'lucide-react';
-import AddQty from '@/components/ui/AddQty';
 import CardMenu from '@/components/ui/custom/CardMenu';
 import React from 'react';
 import { Icon } from '@iconify/react';
 import Container from '@/styles/Container';
+import { Link, useLocation } from 'react-router-dom';
+import type { CartRestaurant } from '@/types/cart';
 
 function Checkout() {
+  const location = useLocation();
+  const order = location.state?.order as CartRestaurant;
+
+  const totalItems =
+    order?.items?.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
+    
+  const subtotal =
+    order?.items?.reduce((acc, item) => acc + item.itemTotal, 0) ?? 0;
+  const deliveryFee = 10000;
+  const serviceFee = 1000;
+  const total = subtotal + deliveryFee + serviceFee;
   return (
-    <Container>
+    <Container className='mb-25'>
       <h1 className='pb-6'>Checkout</h1>
       <div className='md:flex gap-10'>
         {/* ============== LEFT SIDE ============== */}
@@ -52,13 +61,22 @@ function Checkout() {
                 Add Item
               </Button>
             </div>
-            <CardMenu
-              name='food name'
-              price='50.000'
-              imgClassName='rounded-2xl items-center size-20'
-              variant='flex'
-              rightContent={<AddQty />}
-            />
+            {order?.items?.map((item) => (
+              <div key={item.id}>
+                <CardMenu
+                  name={item?.menu?.foodName || 'Unknown'}
+                  price={item?.itemTotal?.toString() || '0'}
+                  imgClassName='rounded-2xl items-center size-20'
+                  variant='flex'
+                  image={item?.menu?.image}
+                  rightContent={
+                    <span className='text-lg-extrabold'>
+                      x {item?.quantity}
+                    </span>
+                  }
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -131,34 +149,35 @@ function Checkout() {
             {/* Payment Summary */}
             <div className='space-y-4 pt-4'>
               <p className='text-lg-extrabold'>Payment Summary</p>
-
               <div className='flex justify-between'>
                 <div className='space-y-4'>
-                  <p className='text-md-medium'>Price ( 2 items)</p>
+                  <p className='text-md-medium'>Price ({totalItems} items)</p>
                   <p className='text-md-medium'>Delivery Fee</p>
                   <p className='text-md-medium'>Service Fee</p>
                   <p className='text-lg-regular'>Total</p>
                 </div>
 
-                <div className='space-y-4'>
-                  <p className='text-md-bold'>Rp 1.100.000</p>
-                  <p className='text-md-bold'>Rp 1.100.000</p>
-                  <p className='text-md-bold'>Rp 1.100.000</p>
-                  <p className='text-lg-extrabold'>Rp 1.100.000</p>
+                <div className='space-y-4 text-right'>
+                  <p className='text-md-bold'>Rp {subtotal.toLocaleString()}</p>
+                  <p className='text-md-bold'>
+                    Rp {deliveryFee.toLocaleString()}
+                  </p>
+                  <p className='text-md-bold'>
+                    Rp {serviceFee.toLocaleString()}
+                  </p>
+                  <p className='text-lg-extrabold'>
+                    Rp {total.toLocaleString()}
+                  </p>
                 </div>
               </div>
+
               {/* Pay Now Button */}
-              <Button className='w-full'>Buy</Button>
+              <Link to='/success'>
+                <Button className='w-full'>Buy</Button>
+              </Link>
             </div>
           </section>
         </div>
-        {/* Alert */}
-        <Alert className='fixed bg-red-700 rounded-md top-20 w-[291px] text-white right-[120px] z-50'>
-          <AlertTitle className='flex justify-between items-center w-full'>
-            <p className='text-sm-semibold'>Something went wrong</p>
-            <X className='cursor-pointer size-4' />
-          </AlertTitle>
-        </Alert>
       </div>
     </Container>
   );

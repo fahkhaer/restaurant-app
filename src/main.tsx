@@ -13,6 +13,7 @@ import Category from './pages/Category';
 import Detail from './pages/Detail';
 import MainLayout from './styles/MainLayout';
 import SideBarProfile from './pages/SideBarProfile';
+import Checkout from './pages/Checkout';
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route element={<MainLayout />}>
               <Route path='/detail/:id' element={<Detail />} />
               <Route path='/cart' element={<Cart />} />
+              <Route path='/checkout' element={<Checkout />} />
               <Route path='/category' element={<Category />} />
               <Route path='/profile' element={<SideBarProfile />} />
               <Route path='/my-order' element={<SideBarProfile />} />

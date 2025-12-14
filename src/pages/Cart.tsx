@@ -3,10 +3,10 @@ import { Button } from '@/components/ui/button';
 import { GetCart } from '@/services/api/cart';
 import Container from '@/styles/Container';
 import type { CartRestaurant } from '@/types/cart';
+import { Link } from 'react-router-dom';
 
 function Cart() {
   const { data, isLoading, isError } = GetCart();
-  console.log('pagecart', data);
 
   if (isLoading) return <p>Loading profile...</p>;
   if (isError) return <p>Error loading profile</p>;
@@ -20,7 +20,9 @@ function Cart() {
               key={item?.restaurant?.id}
               order={item}
               rightContent={
-                <Button className='w-60 h-12 text-[#FDFDFD]'>Checkout</Button>
+                <Link to='/checkout' state={{ order: item }}>
+                  <Button className='w-60 h-12 text-[#FDFDFD]'>Checkout</Button>
+                </Link>
               }
             />
           ))
