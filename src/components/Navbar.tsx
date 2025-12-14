@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/features/store';
+import { GetProfile } from '@/services/api/profile';
 
 type NavbarProps = {
   variant?: 'main' | 'default';
@@ -36,6 +37,8 @@ export default function Navbar({
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, [isMain]);
+
+  const { data: profile } = GetProfile();
 
   //fixed
   const bgFixed = isMain ? (scrolled ? 'fixed' : 'fixed') : '';
@@ -61,6 +64,8 @@ export default function Navbar({
       : 'src/assets/icons/logo.png'
     : 'src/assets/icons/logored.png';
 
+    
+
   return (
     <div
       className={` w-full flex h-20 px-4 md:px-[120px] justify-between items-center transition-all duration-300 ${bgClass} ${bgFixed} `}
@@ -82,7 +87,6 @@ export default function Navbar({
         {/* GUEST */}
         {isGuest && (
           <>
-            {' '}
             {/* Cart Mobile */}
             <Link className='lg:hidden block' to='/cart'>
               <div className='relative flex'>
@@ -140,13 +144,13 @@ export default function Navbar({
             <Link to='/profile' className='hidden lg:flex gap-4 items-center'>
               <Avatar>
                 <AvatarImage
-                  className='h-12 rounded-full'
-                  src='https://github.com/shadcn.png'
+                  className='size-12 rounded-full'
+                  src={profile?.avatar ?? 'https://github.com/shadcn.png'}
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
 
-              <p className={`text-lg-semibold ${textColor}`}>{user.name}</p>
+              <p className={`text-lg-semibold ${textColor}`}>{profile?.name}</p>
             </Link>
           </>
         )}

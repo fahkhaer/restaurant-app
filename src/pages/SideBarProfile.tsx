@@ -8,12 +8,18 @@ import ProfileCard from '@/components/ProfileCard';
 import { Button } from '@/components/ui/button';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
+import { GetProfile } from '@/services/api/profile';
 
 function SideBarProfile() {
+  const { data } = GetProfile();
+
+  console.log(data);
+
   const location = useLocation();
   const defaultTab = useMemo(() => {
     return location.pathname.includes('my-order') ? 'my-order' : 'profile';
   }, [location.pathname]);
+
   return (
     <Container className='mb-25'>
       <Tabs defaultValue={defaultTab} className='md:w-60 flex gap-8'>
@@ -27,11 +33,11 @@ function SideBarProfile() {
               <Avatar>
                 <AvatarImage
                   className='size-12 object-cover rounded-full'
-                  src='https://github.com/shadcn.png'
+                  src={data?.avatar ?? 'https://github.com/shadcn.png'}
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <span className='text-lg-bold'>John Doe</span>
+              <span className='text-lg-bold'>{data?.name}</span>
             </TabsTrigger>
           </TabsList>
           <hr className='bg-neutral-200 my-6' />
