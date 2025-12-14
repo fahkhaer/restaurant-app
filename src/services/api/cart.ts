@@ -1,5 +1,5 @@
 import { baseUrl } from '@/config/constants';
-import type { AddToCartPayload, AddToCartResponse } from '@/types/cart';
+import type { AddToCartPayload, AddToCartResponse, UpdateCartPayload } from '@/types/cart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -43,5 +43,28 @@ export function GetCart() {
     },
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
+  });
+}
+
+export function useUpdateCartItem() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ cartItemId, quantity }: UpdateCartPayload) => {
+      const token = localStorage.getItem('token');
+      const res = await axios.put(
+        `${baseUrl}/api/cart/${cartItemId}`,
+        { quantity },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
   });
 }
