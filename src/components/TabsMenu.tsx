@@ -70,7 +70,7 @@ function TabsMenu({ menu, restaurantId, setAlert }: TabsMenuCardProps) {
               className='shadow-card basis-[calc(25%-16px)]'
               rightContent={
                 <Button
-                  className='w-[79px]'
+                  className='w-[79px] hover:cursor-pointer'
                   disabled={addToCart.isPending}
                   onClick={() => {
                     console.log('CLICKED ITEM:', item);
@@ -102,7 +102,7 @@ function TabsMenu({ menu, restaurantId, setAlert }: TabsMenuCardProps) {
               className='shadow-card basis-[calc(25%-16px)]'
               rightContent={
                 <Button
-                  className='w-[79px]'
+                  className='w-[79px] hover:cursor-pointer'
                   disabled={addToCart.isPending}
                   onClick={() =>
                     addToCart.mutate({
@@ -131,7 +131,7 @@ function TabsMenu({ menu, restaurantId, setAlert }: TabsMenuCardProps) {
               className='shadow-card basis-[calc(25%-16px)]'
               rightContent={
                 <Button
-                  className='w-[79px]'
+                  className='w-[79px] hover:cursor-pointer'
                   disabled={addToCart.isPending}
                   onClick={() =>
                     addToCart.mutate({

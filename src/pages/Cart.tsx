@@ -4,7 +4,7 @@ import Container from '@/styles/Container';
 
 function Cart() {
   return (
-    <Container>
+    <Container className='mb-25'>
       <h1 className='pb-8'>My Cart</h1>
       <MyOrderCard
         rightContent={
