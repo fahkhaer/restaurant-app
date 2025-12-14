@@ -42,7 +42,7 @@ export async function UpdateProfile(data: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  console.log('post', res);
+  
 
   return res.data;
 }

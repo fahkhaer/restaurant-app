@@ -13,8 +13,6 @@ import { GetProfile } from '@/services/api/profile';
 function SideBarProfile() {
   const { data } = GetProfile();
 
-  console.log(data);
-
   const location = useLocation();
   const defaultTab = useMemo(() => {
     return location.pathname.includes('my-order') ? 'my-order' : 'profile';

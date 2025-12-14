@@ -31,7 +31,6 @@ export function GetDetail(id?: string) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data.data);
 
       return res.data.data;
     },
