@@ -6,16 +6,43 @@ import {
 } from '@/components/ui/custom/tabs';
 
 import { Button } from './ui/button';
-import AddQty from './ui/AddQty';
 import CardMenu from './ui/custom/CardMenu';
 import type { Menu } from '@/types/restaurant';
 import errorImg from '@/assets/images/image-off.png';
+import { useAddToCart } from '@/services/api/cart';
+import { useEffect } from 'react';
 
 interface TabsMenuCardProps {
   menu?: Menu[];
+
+  setAlert: React.Dispatch<
+    React.SetStateAction<{
+      type: 'success' | 'error';
+      message?: string;
+    } | null>
+  >;
 }
 
-function TabsMenu({ menu }: TabsMenuCardProps) {
+function TabsMenu({ menu, setAlert }: TabsMenuCardProps) {
+  const addToCart = useAddToCart();
+
+  // alert handler
+  useEffect(() => {
+    if (addToCart.isSuccess) {
+      setAlert({
+        type: 'success',
+        message: addToCart.data?.message,
+      });
+    }
+
+    if (addToCart.isError) {
+      setAlert({
+        type: 'error',
+        message: addToCart.error.message,
+      });
+    }
+  }, [addToCart.isSuccess, addToCart.isError]);
+
   return (
     <Tabs defaultValue='all-menu'>
       <TabsList className=''>
@@ -25,16 +52,36 @@ function TabsMenu({ menu }: TabsMenuCardProps) {
       </TabsList>
       {/* all menus */}
       <TabsContent className='flex mt-6 flex-wrap gap-5' value='all-menu'>
-        {menu?.map((item) => (
-          <CardMenu
-            key={item.id}
-            name={item.foodName ?? 'No food name'}
-            price={item.price ? `Rp ${item.price.toLocaleString()}` : 'Rp 0'}
-            image={item.image ?? errorImg}
-            className='shadow-card basis-[calc(25%-16px)]'
-            rightContent={<Button className='w-[79px]'>Add</Button>}
-          />
-        ))}
+        {menu?.map((item) => {
+          console.log('ITEM MENU:', item);
+
+          return (
+            <CardMenu
+              key={item.id}
+              name={item.foodName ?? 'No food name'}
+              price={item.price ? `Rp ${item.price.toLocaleString()}` : 'Rp 0'}
+              image={item.image ?? errorImg}
+              className='shadow-card basis-[calc(25%-16px)]'
+              rightContent={
+                <Button
+                  className='w-[79px]'
+                  disabled={addToCart.isPending}
+                  onClick={() => {
+                    console.log('CLICKED ITEM:', item);
+
+                    addToCart.mutate({
+                      restaurantId: 293,
+                      menuId: item.id,
+                      quantity: 1,
+                    });
+                  }}
+                >
+                  {addToCart.isPending ? 'Adding...' : 'Add'}
+                </Button>
+              }
+            />
+          );
+        })}
       </TabsContent>
 
       <TabsContent className='flex mt-6 flex-wrap gap-5' value='food'>
@@ -47,7 +94,21 @@ function TabsMenu({ menu }: TabsMenuCardProps) {
               price={item.price ? `Rp ${item.price.toLocaleString()}` : 'Rp 0'}
               image={item.image ?? errorImg}
               className='shadow-card basis-[calc(25%-16px)]'
-              rightContent={<Button className='w-[79px]'>Add</Button>}
+              rightContent={
+                <Button
+                  className='w-[79px]'
+                  disabled={addToCart.isPending}
+                  onClick={() =>
+                    addToCart.mutate({
+                      restaurantId: 293,
+                      menuId: 1325,
+                      quantity: 1,
+                    })
+                  }
+                >
+                  {addToCart.isPending ? 'Adding...' : 'Add'}
+                </Button>
+              }
             />
           ))}
       </TabsContent>
@@ -62,7 +123,21 @@ function TabsMenu({ menu }: TabsMenuCardProps) {
               price={item.price ? `Rp ${item.price.toLocaleString()}` : 'Rp 0'}
               image={item.image ?? errorImg}
               className='shadow-card basis-[calc(25%-16px)]'
-              rightContent={<AddQty />}
+              rightContent={
+                <Button
+                  className='w-[79px]'
+                  disabled={addToCart.isPending}
+                  onClick={() =>
+                    addToCart.mutate({
+                      restaurantId: 293,
+                      menuId: item.id,
+                      quantity: 1,
+                    })
+                  }
+                >
+                  {addToCart.isPending ? 'Adding...' : 'Add'}
+                </Button>
+              }
             />
           ))}
       </TabsContent>

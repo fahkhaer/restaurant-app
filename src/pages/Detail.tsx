@@ -11,10 +11,28 @@ import errorImg from '@/assets/images/image-off.png';
 import { getDistanceKm } from '@/lib/utils/distance';
 import type { Review } from '@/types/reviews';
 import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import DataAlert from '@/components/ui/custom/dataAlert';
 
 function Detail() {
-const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
   const { data, isLoading, isError } = GetDetail(id);
+
+  // alert add to cart
+  const [alert, setAlert] = useState<{
+    type: 'success' | 'error';
+    message?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  });
 
   //coordinate
   const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum
@@ -83,11 +101,12 @@ const { id } = useParams<{ id: string }>();
       />
       <hr className='w-full bg-neutral-300' />
       {/* menu */}
+      {alert && <DataAlert type={alert.type} message={alert.message} />}
       <div>
         <h1 className='mb-6'>Menu</h1>
         {/* content Menus */}
         {data?.menus?.length ? (
-          <TabsMenu menu={data?.menus} />
+          <TabsMenu menu={data?.menus} setAlert={setAlert} />
         ) : (
           <p className='text-md-regular text-neutral-500'>Sold menu</p>
         )}
