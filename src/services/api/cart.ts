@@ -1,5 +1,9 @@
 import { baseUrl } from '@/config/constants';
-import type { AddToCartPayload, AddToCartResponse, UpdateCartPayload } from '@/types/cart';
+import type {
+  AddToCartPayload,
+  AddToCartResponse,
+  UpdateCartPayload,
+} from '@/types/cart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -65,6 +69,28 @@ export function useUpdateCartItem() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+  });
+}
+
+export function useDeleteCartItem() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (cartItemId: number) => {
+      const token = localStorage.getItem('token');
+      const res = await axios.delete(`${baseUrl}/api/cart/${cartItemId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    },
+    onError: (error) => {
+      console.error('Failed to delete cart item', error);
     },
   });
 }

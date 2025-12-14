@@ -9,7 +9,7 @@ type AddQtyProps = {
 function AddQty({ quantity = 1, onChange }: AddQtyProps) {
   const handleIncrement = () => onChange?.(quantity + 1);
   const handleDecrement = () => {
-    if (quantity > 1) onChange?.(quantity - 1);
+    onChange?.(quantity - 1);
   };
 
   return (

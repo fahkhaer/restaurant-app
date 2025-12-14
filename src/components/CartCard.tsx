@@ -3,7 +3,7 @@ import AddQty from '@/components/ui/AddQty';
 import type { ReactNode } from 'react';
 import CardMenu from './ui/custom/CardMenu';
 import type { CartRestaurant } from '@/types/cart';
-import { useUpdateCartItem } from '@/services/api/cart';
+import { useDeleteCartItem, useUpdateCartItem } from '@/services/api/cart';
 
 type MyOrderCardProps = {
   order?: CartRestaurant;
@@ -14,6 +14,7 @@ export default function CartCard({ order, rightContent }: MyOrderCardProps) {
   const name = order?.restaurant.name ?? 'unknown';
   const total = order?.subtotal;
   const updateCart = useUpdateCartItem();
+  const deleteCart = useDeleteCartItem();
 
   return (
     <div className='shadow-card space-y-5 p-5 rounded-2xl'>
@@ -45,11 +46,14 @@ export default function CartCard({ order, rightContent }: MyOrderCardProps) {
                   <AddQty
                     quantity={qty}
                     onChange={(newQty) => {
-                      console.log('New quantity:', newQty);
-                      updateCart.mutate({
-                        cartItemId: item.id,
-                        quantity: newQty,
-                      });
+                      if (newQty === 0) {
+                        deleteCart.mutate(item.id);
+                      } else {
+                        updateCart.mutate({
+                          cartItemId: item.id,
+                          quantity: newQty,
+                        });
+                      }
                     }}
                   />
                 }
