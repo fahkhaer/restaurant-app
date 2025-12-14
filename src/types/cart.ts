@@ -42,3 +42,8 @@ export type GetCartResponse = {
     cart: CartRestaurant[];
   };
 };
+
+export type UpdateCartPayload = {
+  cartItemId: number;
+  quantity: number;
+};
