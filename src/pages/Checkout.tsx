@@ -12,6 +12,8 @@ import { checkoutSchema, type CheckoutFormData } from '@/schemas/checkout';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCheckout } from '@/services/api/checkout';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { X } from 'lucide-react';
 
 function Checkout() {
   const { data } = GetProfile();
@@ -86,6 +88,12 @@ function Checkout() {
         navigate('/success', { state: { transaction: res.data.transaction } });
       },
       onError: (err) => {
+        <Alert className='fixed bg-red-700 rounded-md top-20 w-[291px] text-white right-[120px] z-50'>
+          <AlertTitle className='flex justify-between items-center w-full'>
+            <p className='text-sm-semibold'>Something went wrong</p>
+            <X className='cursor-pointer size-4' />
+          </AlertTitle>
+        </Alert>;
         console.error('Checkout failed:', err);
       },
     });
