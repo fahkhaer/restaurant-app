@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import CardMenu from '@/components/ui/custom/CardMenu';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import Container from '@/styles/Container';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,9 +11,11 @@ import { GetProfile } from '@/services/api/profile';
 import { checkoutSchema, type CheckoutFormData } from '@/schemas/checkout';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useCheckout } from '@/services/api/checkout';
 
 function Checkout() {
   const { data } = GetProfile();
+  const buy = useCheckout();
 
   //ambil data dari restoran
   const location = useLocation();
@@ -52,19 +54,49 @@ function Checkout() {
   const serviceFee = 1000;
   const total = subtotal + deliveryFee + serviceFee;
 
+  //payment method
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('BRI');
+
   //validasi zod
-  const onSubmit = (data: CheckoutFormData) => {
-    console.log('Form validated:', data);
-    // di sini nanti panggil API buat checkout
-    navigate('/success');
+  const onSubmit = (formData: CheckoutFormData) => {
+    if (!order) return;
+
+    const payload = {
+      restaurants: [
+        {
+          restaurantId: order.restaurant.id,
+          items: order.items.map((item) => ({
+            menuId: item.menu.id,
+            quantity: item.quantity,
+          })),
+        },
+      ],
+      deliveryAddress: formData.address,
+      phone: formData.phone,
+      paymentMethod: selectedPaymentMethod,
+      notes: formData.notes ?? '',
+    };
+    console.log('Form validated:', formData);
+
+    buy.mutate(payload, {
+      onSuccess: (res) => {
+        console.log('Checkout success:', res);
+
+        navigate('/success', { state: { transaction: res.data.transaction } });
+      },
+      onError: (err) => {
+        console.log('Checkout failed', err);
+      },
+    });
   };
+
   return (
     <Container className='mb-25'>
       <h1 className='pb-6'>Checkout</h1>
-      <div className='md:flex gap-10'>
+      <form onSubmit={handleSubmit(onSubmit)} className='md:flex gap-10'>
         {/* ============== LEFT SIDE ============== */}
         <div className='flex-1 space-y-8'>
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
+          <div className='space-y-5'>
             {/* Delivery Address */}
             <div className='shadow-card rounded-2xl flex flex-col p-5 gap-5'>
               <div className='flex gap-2'>
@@ -117,20 +149,19 @@ function Checkout() {
                 </Button>
               </div>
               {order?.items?.map((item) => (
-                <div key={item.id}>
-                  <CardMenu
-                    name={item?.menu?.foodName || 'Unknown'}
-                    price={item?.itemTotal?.toString() || '0'}
-                    imgClassName='rounded-2xl items-center size-20'
-                    variant='flex'
-                    image={item?.menu?.image}
-                    rightContent={
-                      <span className='text-lg-extrabold'>
-                        x {item?.quantity}
-                      </span>
-                    }
-                  />
-                </div>
+                <CardMenu
+                  key={item.id}
+                  name={item?.menu?.foodName || 'Unknown'}
+                  price={item?.itemTotal?.toString() || '0'}
+                  imgClassName='rounded-2xl items-center size-20'
+                  variant='flex'
+                  image={item?.menu?.image}
+                  rightContent={
+                    <span className='text-lg-extrabold'>
+                      x {item?.quantity}
+                    </span>
+                  }
+                />
               ))}
             </div>
 
@@ -146,7 +177,7 @@ function Checkout() {
                 <p className='text-red-500 text-sm'>{errors.notes.message}</p>
               )}
             </div>
-          </form>
+          </div>
         </div>
 
         {/* ============== RIGHT SIDE ============== */}
@@ -156,7 +187,10 @@ function Checkout() {
             <div>
               <span className='text-lg-extrabold'>Payment Method</span>
 
-              <RadioGroup defaultValue='BNI'>
+              <RadioGroup
+                defaultValue={selectedPaymentMethod}
+                onValueChange={setSelectedPaymentMethod}
+              >
                 {[
                   {
                     id: 'BNI',
@@ -247,7 +281,7 @@ function Checkout() {
             </div>
           </section>
         </div>
-      </div>
+      </form>
     </Container>
   );
 }
