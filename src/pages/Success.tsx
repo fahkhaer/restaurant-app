@@ -1,10 +1,15 @@
-import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@iconify/react';
-import { CheckIcon, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { CheckIcon } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 function Success() {
+  const location = useLocation();
+  const transaction = location.state?.transaction;
+
+  console.log('suces', transaction);
+
   return (
     <section className='flex-center h-screen'>
       <div>
@@ -57,11 +62,17 @@ function Success() {
               </div>
 
               <div className='space-y-4 text-right'>
-                <p className='text-md-bold'>25 August 2025, 15:51</p>
-                <p className='text-md-bold'>Bank Rakyat Indonesia</p>
-                <p className='text-md-bold'>Rp 100.000</p>
-                <p className='text-md-bold'>Rp 10.000</p>
-                <p className='text-md-bold'>Rp 1.000</p>
+                <p className='text-md-bold'>
+                  {dayjs(transaction?.createdAt).format('DD MMMM YYYY, HH:mm')}
+                </p>
+                <p className='text-md-bold'>{transaction?.paymentMethod}</p>
+                <p className='text-md-bold'>{transaction?.pricing?.subtotal}</p>
+                <p className='text-md-bold'>
+                  Rp {transaction?.pricing?.deliveryFee}
+                </p>
+                <p className='text-md-bold'>
+                  Rp {transaction?.pricing?.serviceFee}
+                </p>
               </div>
             </div>
             {/* Pay Now Button */}
@@ -77,19 +88,15 @@ function Success() {
 
             <div className='flex justify-between'>
               <p className='text-lg-regular'>Total</p>
-              <p className='text-lg-extrabold'>Rp 1.100.000</p>
+              <p className='text-lg-extrabold'>
+                Rp {transaction?.pricing?.totalPrice}
+              </p>
             </div>
-
-            <Button className='w-full h-12 mt-4'>See My Orders</Button>
+            <Link to={'/my-order'}>
+              <Button className='w-full h-12 mt-4'>See My Orders</Button>
+            </Link>
           </section>
         </div>
-        {/* Alert */}
-        <Alert className='fixed bg-red-700 rounded-md top-20 w-[291px] text-white right-[120px] z-50'>
-          <AlertTitle className='flex justify-between items-center w-full'>
-            <p className='text-sm-semibold'>Something went wrong</p>
-            <X className='cursor-pointer size-4' />
-          </AlertTitle>
-        </Alert>
       </div>
     </section>
   );

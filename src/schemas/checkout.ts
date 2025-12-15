@@ -11,7 +11,7 @@ export const checkoutSchema = z.object({
     .regex(/^\d+$/, { message: 'Phone can only contain numbers' }),
   notes: z
     .string()
-    .min(5, { message: 'Notes must be at least 5 characters' })
+    .min(3, { message: 'Notes must be at least 3 characters' })
     .max(200, { message: 'Notes cannot exceed 200 characters' })
     .optional(),
 });
