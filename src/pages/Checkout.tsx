@@ -1,115 +1,152 @@
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import CardMenu from '@/components/ui/custom/CardMenu';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import Container from '@/styles/Container';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import type { CartRestaurant } from '@/types/cart';
 import { Input } from '@/components/ui/input';
 import { GetProfile } from '@/services/api/profile';
+import { checkoutSchema, type CheckoutFormData } from '@/schemas/checkout';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 function Checkout() {
   const { data } = GetProfile();
 
+  //ambil data dari restoran
   const location = useLocation();
   const order = location.state?.order as CartRestaurant;
 
+  //oper data ke success
+  const navigate = useNavigate();
+
+  //validasi zod
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
+    mode: 'onChange',
+    defaultValues: {
+      address: '',
+      phone: '',
+      notes: '',
+    },
+  });
+
+  //data phone dari getProfile
   useEffect(() => {
-    if (data) {
-      setPhone(data.phone ?? '');
-    }
-  }, [data]);
+    if (data.phone) setValue('phone', data.phone);
+  }, [data, setValue]);
+
+  //formula
   const totalItems =
     order?.items?.reduce((acc, item) => acc + item.quantity, 0) ?? 0;
-
   const subtotal =
     order?.items?.reduce((acc, item) => acc + item.itemTotal, 0) ?? 0;
   const deliveryFee = 10000;
   const serviceFee = 1000;
   const total = subtotal + deliveryFee + serviceFee;
 
-  const [notes, setNotes] = useState('');
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
-
+  //validasi zod
+  const onSubmit = (data: CheckoutFormData) => {
+    console.log('Form validated:', data);
+    // di sini nanti panggil API buat checkout
+    navigate('/success');
+  };
   return (
     <Container className='mb-25'>
       <h1 className='pb-6'>Checkout</h1>
       <div className='md:flex gap-10'>
         {/* ============== LEFT SIDE ============== */}
         <div className='flex-1 space-y-8'>
-          {/* Delivery Address */}
-          <div className='shadow-card rounded-2xl flex flex-col p-5 gap-5'>
-            <div className='flex gap-2'>
-              <img
-                className='size-8 rounded-t-2xl'
-                src='./src/assets/icons/map-logo.png'
-                alt='map-logo'
-              />
-              <span className='text-lg-extrabold'>Delivery Address</span>
-            </div>
-
-            <div className=' space-y-2'>
-              <Input
-                className='text-md-medium '
-                id='address'
-                placeholder='Jl. Sudirman No. 25, Jakarta Pusat, 10220'
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-              <Input
-                className='text-md-medium text-neutral-500'
-                id='phone'
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Orders */}
-          <div className='shadow-card rounded-2xl flex flex-col p-5 gap-5'>
-            <div className='flex-between'>
+          <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
+            {/* Delivery Address */}
+            <div className='shadow-card rounded-2xl flex flex-col p-5 gap-5'>
               <div className='flex gap-2'>
                 <img
                   className='size-8 rounded-t-2xl'
-                  src='./src/assets/icons/small-logo.png'
+                  src='./src/assets/icons/map-logo.png'
                   alt='map-logo'
                 />
-                <span className='text-lg-extrabold'>Burger Bang</span>
+                <span className='text-lg-extrabold'>Delivery Address</span>
               </div>
-              <Button className='w-30 text-md-bold' variant={'outline'}>
-                Add Item
-              </Button>
-            </div>
-            {order?.items?.map((item) => (
-              <div key={item.id}>
-                <CardMenu
-                  name={item?.menu?.foodName || 'Unknown'}
-                  price={item?.itemTotal?.toString() || '0'}
-                  imgClassName='rounded-2xl items-center size-20'
-                  variant='flex'
-                  image={item?.menu?.image}
-                  rightContent={
-                    <span className='text-lg-extrabold'>
-                      x {item?.quantity}
-                    </span>
-                  }
-                />
-              </div>
-            ))}
-          </div>
 
-          {/* Notes */}
-          <div className='shadow-card rounded-2xl flex flex-col p-5 gap-3'>
-            <span className='text-lg-extrabold'>Notes</span>
-            <Input
-              id='notes'
-              placeholder='Add a note for your order...'
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
-          </div>
+              <div className=' space-y-2'>
+                <Input
+                  className='text-md-medium '
+                  id='address'
+                  placeholder='Jl. Sudirman No. 25, Jakarta Pusat, 10220'
+                  {...register('address')}
+                />
+                {errors.address && (
+                  <p className='text-red-500 text-sm'>
+                    {errors.address.message}
+                  </p>
+                )}
+                <Input
+                  className='text-md-medium text-neutral-500'
+                  id='phone'
+                  {...register('phone')}
+                />
+                {errors.phone && (
+                  <p className='text-red-500 text-sm'>{errors.phone.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Orders */}
+            <div className='shadow-card rounded-2xl flex flex-col p-5 gap-5'>
+              <div className='flex-between'>
+                <div className='flex gap-2'>
+                  <img
+                    className='size-8 rounded-t-2xl'
+                    src='./src/assets/icons/small-logo.png'
+                    alt='map-logo'
+                  />
+                  <span className='text-lg-extrabold'>
+                    {order?.restaurant.name ?? 'unknown'}
+                  </span>
+                </div>
+                <Button className='w-30 text-md-bold' variant={'outline'}>
+                  Add Item
+                </Button>
+              </div>
+              {order?.items?.map((item) => (
+                <div key={item.id}>
+                  <CardMenu
+                    name={item?.menu?.foodName || 'Unknown'}
+                    price={item?.itemTotal?.toString() || '0'}
+                    imgClassName='rounded-2xl items-center size-20'
+                    variant='flex'
+                    image={item?.menu?.image}
+                    rightContent={
+                      <span className='text-lg-extrabold'>
+                        x {item?.quantity}
+                      </span>
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Notes */}
+            <div className='shadow-card rounded-2xl flex flex-col p-5 gap-3'>
+              <span className='text-lg-extrabold'>Notes</span>
+              <Input
+                id='notes'
+                placeholder='Add a note for your order...'
+                {...register('notes')}
+              />
+              {errors.notes && (
+                <p className='text-red-500 text-sm'>{errors.notes.message}</p>
+              )}
+            </div>
+          </form>
         </div>
 
         {/* ============== RIGHT SIDE ============== */}
@@ -204,9 +241,9 @@ function Checkout() {
               </div>
 
               {/* Pay Now Button */}
-              <Link to='/success'>
-                <Button className='w-full'>Buy</Button>
-              </Link>
+              <Button type='submit' disabled={!isValid} className='w-full'>
+                Buy
+              </Button>
             </div>
           </section>
         </div>
