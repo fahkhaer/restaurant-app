@@ -160,7 +160,7 @@ function Checkout() {
                 <CardMenu
                   key={item.id}
                   name={item?.menu?.foodName || 'Unknown'}
-                  price={item?.itemTotal?.toString() || '0'}
+                  price={`Rp${item?.itemTotal?.toString()} || '0'`}
                   imgClassName='rounded-2xl items-center size-20'
                   variant='flex'
                   image={item?.menu?.image}

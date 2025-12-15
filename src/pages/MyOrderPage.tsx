@@ -15,7 +15,7 @@ function MyOrderPage() {
   const [status, setStatus] = useState<OrderStatus>('done');
 
   const { data, isLoading, isError } = useMyOrders(status);
-  
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
 
@@ -47,7 +47,6 @@ function MyOrderPage() {
       <Tabs defaultValue='done' onValueChange={handleStatusChange}>
         <TabsList className='w-fit pt-0 pb-5 justify-start gap-3'>
           <span className='text-lg-bold text-[#0A0D12]'>Status</span>
-
           <TabsTrigger value='preparing'>Preparing</TabsTrigger>
           <TabsTrigger value='on_the_way'>On The Way</TabsTrigger>
           <TabsTrigger value='delivered'>Delivered</TabsTrigger>
@@ -67,6 +66,7 @@ function MyOrderPage() {
                   <MyOrderCard
                     key={order.id}
                     order={order}
+                    showQtyControl
                     rightContent={<GiveReview />}
                   />
                 ))
