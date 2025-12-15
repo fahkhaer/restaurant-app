@@ -19,7 +19,6 @@ export function useCheckout() {
           },
         }
       );
-      console.log(res);
 
       return res.data;
     },

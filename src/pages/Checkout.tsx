@@ -80,8 +80,6 @@ function Checkout() {
       notes: formData.notes ?? '',
     };
 
-    console.log('Payload:', payload);
-
     buy.mutate(payload, {
       onSuccess: (res) => {
         console.log('Checkout success:', res);

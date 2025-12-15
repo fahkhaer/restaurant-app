@@ -15,7 +15,7 @@ export default function MyOrderCard({
   rightContent,
   showQtyControl,
 }: MyOrderCardProps) {
-  console.log('order', order);
+  
   return (
     <div className='shadow-card space-y-5 p-5 rounded-2xl'>
       <div className='flex flex-col gap-1'>

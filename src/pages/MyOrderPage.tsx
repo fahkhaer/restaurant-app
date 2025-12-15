@@ -15,6 +15,7 @@ function MyOrderPage() {
   const [status, setStatus] = useState<OrderStatus>('done');
 
   const { data, isLoading, isError } = useMyOrders(status);
+console.log('orderangua', data);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
