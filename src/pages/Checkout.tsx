@@ -65,10 +65,11 @@ function Checkout() {
       restaurants: [
         {
           restaurantId: order.restaurant.id,
-          items: order.items.map((item) => ({
-            menuId: item.menu.id,
-            quantity: item.quantity,
-          })),
+          items:
+            order.items?.map((item) => ({
+              menuId: item.menu.id,
+              quantity: item.quantity,
+            })) ?? [],
         },
       ],
       deliveryAddress: formData.address,
@@ -76,16 +77,16 @@ function Checkout() {
       paymentMethod: selectedPaymentMethod,
       notes: formData.notes ?? '',
     };
-    console.log('Form validated:', formData);
+
+    console.log('Payload:', payload);
 
     buy.mutate(payload, {
       onSuccess: (res) => {
         console.log('Checkout success:', res);
-
         navigate('/success', { state: { transaction: res.data.transaction } });
       },
       onError: (err) => {
-        console.log('Checkout failed', err);
+        console.error('Checkout failed:', err);
       },
     });
   };
@@ -107,8 +108,7 @@ function Checkout() {
                 />
                 <span className='text-lg-extrabold'>Delivery Address</span>
               </div>
-
-              <div className=' space-y-2'>
+              <div className='space-y-2'>
                 <Input
                   className='text-md-medium '
                   id='address'
@@ -138,7 +138,7 @@ function Checkout() {
                   <img
                     className='size-8 rounded-t-2xl'
                     src='./src/assets/icons/small-logo.png'
-                    alt='map-logo'
+                    alt='restaurant-logo'
                   />
                   <span className='text-lg-extrabold'>
                     {order?.restaurant.name ?? 'unknown'}
@@ -181,12 +181,11 @@ function Checkout() {
         </div>
 
         {/* ============== RIGHT SIDE ============== */}
-        <div className='relative flex-1 md:w-[390px] p-5 shadow-card  rounded-2xl'>
+        <div className='relative flex-1 md:w-[390px] p-5 shadow-card rounded-2xl'>
           <section>
             {/* Payment Method */}
             <div>
               <span className='text-lg-extrabold'>Payment Method</span>
-
               <RadioGroup
                 defaultValue={selectedPaymentMethod}
                 onValueChange={setSelectedPaymentMethod}
@@ -259,7 +258,6 @@ function Checkout() {
                   <p className='text-md-medium'>Service Fee</p>
                   <p className='text-lg-regular'>Total</p>
                 </div>
-
                 <div className='space-y-4 text-right'>
                   <p className='text-md-bold'>Rp {subtotal.toLocaleString()}</p>
                   <p className='text-md-bold'>
@@ -274,9 +272,13 @@ function Checkout() {
                 </div>
               </div>
 
-              {/* Pay Now Button */}
-              <Button type='submit' disabled={!isValid} className='w-full'>
-                Buy
+              {/* Buy Button */}
+              <Button
+                type='submit'
+                disabled={!isValid || buy.isPending}
+                className='w-full'
+              >
+                {buy.isPending ? 'Processing...' : 'Buy'}
               </Button>
             </div>
           </section>
