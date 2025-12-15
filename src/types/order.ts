@@ -18,14 +18,16 @@ export type OrderPricing = {
   totalPrice: number;
 };
 
-export type OrderItem = {
+export type OrderItemBase = {
   menuId: number;
   menuName: string;
   price: number;
-  image: string;
   quantity: number;
   itemTotal: number;
 };
+
+export type OrderItem = OrderItemBase & { image: string };
+
 
 export type OrderRestaurant = {
   restaurant: OrderRestaurantInfo;
