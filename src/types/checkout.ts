@@ -32,3 +32,21 @@ export type TransactionRestaurant = {
 };
 
 export type TransactionItem = OrderItemBase;
+
+export type CheckoutPayload = {
+  restaurants: CheckoutRestaurant[];
+  deliveryAddress: string;
+  phone: string;
+  paymentMethod: string;
+  notes: string;
+};
+
+export type CheckoutRestaurant = {
+  restaurantId: number;
+  items: CheckoutItem[];
+};
+
+export type CheckoutItem = {
+  menuId: number;
+  quantity: number;
+};
