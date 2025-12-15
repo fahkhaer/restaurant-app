@@ -7,9 +7,14 @@ import type { Order } from '@/types/order';
 type MyOrderCardProps = {
   order?: Order;
   rightContent?: string | ReactNode;
+  showQtyControl?: boolean;
 };
 
-export default function MyOrderCard({ order, rightContent }: MyOrderCardProps) {
+export default function MyOrderCard({
+  order,
+  rightContent,
+  showQtyControl,
+}: MyOrderCardProps) {
   const name = order?.restaurants[0]?.restaurant?.name ?? 'unknown';
   const menu = order?.restaurants[0]?.items[0].menuName ?? 'unknown';
   const qty = order?.restaurants[0]?.items[0].quantity;
@@ -17,6 +22,7 @@ export default function MyOrderCard({ order, rightContent }: MyOrderCardProps) {
   const total = order?.restaurants[0]?.items[0].itemTotal;
   const img =
     order?.restaurants[0]?.items[0].image ?? '/src/assets/images/price.png';
+  console.log(order);
   return (
     <div className='shadow-card space-y-5 p-5 rounded-2xl'>
       <div className='flex items-center gap-2'>
@@ -34,7 +40,15 @@ export default function MyOrderCard({ order, rightContent }: MyOrderCardProps) {
         name={menu}
         price={price?.toString()}
         image={img}
-        rightContent={<AddQty />}
+        rightContent={showQtyControl ? <AddQty quantity={qty} /> : null}
+      />
+      {/* second menu */}
+      <CardMenu
+        variant='flex'
+        imgClassName='size-22 rounded-2xl'
+        name='empty'
+        price={0}
+        image='/src/assets/images/empty-menu.png'
       />
       <div>
         <span className='text-md-medium'>
