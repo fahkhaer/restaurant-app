@@ -61,7 +61,7 @@ function CardMenu({
             <div className='flex-between p-3 md:p-4'>
               <div>
                 <span className='text-md-medium'>{name}</span>
-                <h1 className='text-lg-extrabold'>Rp.{price}</h1>
+                <h1 className='text-lg-extrabold'>{price}</h1>
               </div>
             </div>
           </div>
