@@ -22,13 +22,10 @@ function Home() {
         ? 'all-restaurant'
         : undefined,
   });
+  const navigate = useNavigate();
 
   //coordinate
   const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum
-  const navigate = useNavigate();
-
-  if (isLoading) return <p>Loading...</p>;
-  if (loadingBestseller) return <p>Loading...</p>;
 
   if (isError) return <p>Error</p>;
 
@@ -47,68 +44,71 @@ function Home() {
     { desc: 'Delivery' },
     { desc: 'Lunch' },
   ];
+  const showSkeleton = isLoading || loadingBestseller;
 
   return (
     <section className='custom-container mb-25'>
       <div className='flex justify-between flex-wrap gap-3 my-10'>
-        {filter.map((item, i) => {
-          return (
-            <button
-              key={i}
-              onClick={() => {
-                if (item.desc === 'Category') {
-                  navigate('/category');
-                } else setActiveFilter(item.desc);
-              }}
-              className={`shadow-card rounded-2xl flex flex-col p-2 gap-2 flex-1 min-w-26.5 max-w-40.5 ${
-                activeFilter === item.desc
-                  ? 'bg-blue-200 ring-2 ring-blue-300'
-                  : 'bg-white'
-              }`}
-            >
-              <div className='w-full bg-[#E0ECFF] rounded-xl p-3 grid place-items-center'>
-                <img
-                  className='size-12'
-                  src={`/src/assets/images/${item.desc}.png`}
-                  alt='icon'
-                />
-              </div>
-              <p className='text-lg-bold text-center'>{item.desc}</p>
-            </button>
-          );
-        })}
+        {filter.map((item, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              if (item.desc === 'Category') {
+                navigate('/category');
+              } else {
+                setActiveFilter(item.desc);
+              }
+            }}
+            className={`shadow-card rounded-2xl flex flex-col p-2 gap-2 flex-1 min-w-26.5 max-w-40.5 ${
+              activeFilter === item.desc
+                ? 'bg-blue-200 ring-2 ring-blue-300'
+                : 'bg-white'
+            }`}
+          >
+            <div className='w-full bg-[#E0ECFF] rounded-xl p-3 grid place-items-center'>
+              <img
+                className='size-12'
+                src={`/src/assets/images/${item.desc}.png`}
+                alt='icon'
+              />
+            </div>
+            <p className='text-lg-bold text-center'>{item.desc}</p>
+          </button>
+        ))}
       </div>
       <div className='flex justify-between mb-8 items-center'>
-        <span className='display-md-extrabold'>Recommended </span>
-        <span>
-          <Button variant={'link'}>See All</Button>
-        </span>
+        <span className='display-md-extrabold'>Recommended</span>
+        <Button variant='link'>See All</Button>
       </div>
 
       <div className='flex flex-wrap justify-between gap-10'>
-        {restaurants.map((item: RecommendationItem, i: number) => {
-          const distanceKm =
-            item.lat != null && item.long != null
-              ? getDistanceKm(
-                  userLocation.lat,
-                  userLocation.long,
-                  item.lat,
-                  item.long
-                )
-              : undefined;
+        {showSkeleton
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <CardStore key={i} isLoading />
+            ))
+          : restaurants.map((item: RecommendationItem) => {
+              const distanceKm =
+                item.lat != null && item.long != null
+                  ? getDistanceKm(
+                      userLocation.lat,
+                      userLocation.long,
+                      item.lat,
+                      item.long
+                    )
+                  : undefined;
 
-          return (
-            <Link key={i} to={`/detail/${item?.id}`}>
-              <CardStore
-                name={item.name}
-                location={item.place}
-                rating={item.star}
-                logo={item.logo}
-                coordinate={distanceKm}
-              />
-            </Link>
-          );
-        })}
+              return (
+                <Link key={item.id} to={`/detail/${item.id}`}>
+                  <CardStore
+                    name={item.name}
+                    location={item.place}
+                    rating={item.star}
+                    logo={item.logo}
+                    coordinate={distanceKm}
+                  />
+                </Link>
+              );
+            })}
       </div>
       <LoadMoreButton className='mt-[41px]' />
     </section>

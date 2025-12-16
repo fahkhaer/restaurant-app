@@ -28,9 +28,8 @@ function Category() {
   const [priceMax, setPriceMax] = useState<number | undefined>();
   const [rating, setRating] = useState<number | undefined>();
 
-const debouncedPriceMin = useDebounce(priceMin, 600);
-const debouncedPriceMax = useDebounce(priceMax, 600);
-
+  const debouncedPriceMin = useDebounce(priceMin, 600);
+  const debouncedPriceMax = useDebounce(priceMax, 600);
 
   const {
     data: resto,
@@ -39,8 +38,8 @@ const debouncedPriceMax = useDebounce(priceMax, 600);
   } = GetRestaurants({
     location: 'Jakarta',
     range,
- priceMin: debouncedPriceMin,
-  priceMax: debouncedPriceMax,
+    priceMin: debouncedPriceMin,
+    priceMax: debouncedPriceMax,
     rating: undefined,
     page: 1,
     limit: 20,
@@ -49,20 +48,14 @@ const debouncedPriceMax = useDebounce(priceMax, 600);
     isLoading: boolean;
     isError: boolean;
   };
-  console.log('filterr', resto);
 
-const filteredRestaurants = useMemo(() => {
-  if (!resto?.restaurants) return [];
+  const filteredRestaurants = useMemo(() => {
+    if (!resto?.restaurants) return [];
+    if (rating == null) return resto.restaurants;
 
-  if (rating == null) return resto.restaurants;
+    return resto.restaurants.filter((item) => Math.floor(item.star) === rating);
+  }, [resto?.restaurants, rating]);
 
-  return resto.restaurants.filter(
-    (item) => Math.floor(item.star) === rating
-  );
-}, [resto?.restaurants, rating]);
-
-
-  if (restoLoading) return <p>Loading...</p>;
   if (restoError) return <p>Error</p>;
 
   return (
@@ -71,96 +64,100 @@ const filteredRestaurants = useMemo(() => {
       <section className='flex gap-5 md:pb-[97px]'>
         <div className='w-full shadow-card max-w-[266px] rounded-xl py-4 space-y-6'>
           {/* Category */}
-          <div className=' space-y-2.5 px-4'>
-            <div className='space-y-2.5'>
-              <span className='text-md-extrabold'>FILTER</span>
-              <div className='text-lg-extrabold'>Distance</div>
+          <div className='space-y-2.5 px-4'>
+            <span className='text-md-extrabold'>FILTER</span>
+            <div className='text-lg-extrabold'>Distance</div>
 
-              {dummyCategories.map((category) => (
-                <div key={category.id} className='flex items-center gap-2'>
-                  <Checkbox
-                    checked={range === category.value}
-                    onCheckedChange={() =>
-                      setRange(
-                        range === category.value ? undefined : category.value
-                      )
-                    }
-                  />
-                  <label className='text-md-regular'>{category.name}</label>
-                  
-                </div>
-              ))}
-            </div>
+            {dummyCategories.map((category) => (
+              <div key={category.id} className='flex items-center gap-2'>
+                <Checkbox
+                  checked={range === category.value}
+                  onCheckedChange={() =>
+                    setRange(
+                      range === category.value ? undefined : category.value
+                    )
+                  }
+                />
+                <label className='text-md-regular'>{category.name}</label>
+              </div>
+            ))}
           </div>
 
           <hr className='border-neutral-300' />
 
           {/* Price */}
-          <div className='w-full max-w-[266px] rounded-xl'>
-            <div className='space-y-2.5 px-4'>
-              <div className='text-lg-extrabold'>Price</div>
+          <div className='space-y-2.5 px-4'>
+            <div className='text-lg-extrabold'>Price</div>
 
-              <InputGroup>
-                <InputGroupInput
-                  placeholder='Minimum Price'
-                  onChange={(e) =>
-                    setPriceMin(
-                      e.target.value ? Number(e.target.value) : undefined
-                    )
-                  }
-                />
-                <InputGroupAddon className='h-[54px]'>
-                  <Badge
-                    className='text-neutral-950 h-full'
-                    variant={'secondary'}
-                  >
-                    <span className='text-md-regular'>Rp</span>
-                  </Badge>
-                </InputGroupAddon>
-              </InputGroup>
-              <InputGroup>
-                <InputGroupInput
-                  placeholder='Maximum Price'
-                  onChange={(e) => setPriceMax(Number(e.target.value))}
-                />
-                <InputGroupAddon className='h-[54px]'>
-                  <Badge
-                    className='text-neutral-950 h-full'
-                    variant={'secondary'}
-                  >
-                    <span className='text-md-regular'>Rp</span>
-                  </Badge>
-                </InputGroupAddon>
-              </InputGroup>
-            </div>
+            <InputGroup>
+              <InputGroupInput
+                placeholder='Minimum Price'
+                onChange={(e) =>
+                  setPriceMin(
+                    e.target.value ? Number(e.target.value) : undefined
+                  )
+                }
+              />
+              <InputGroupAddon className='h-[54px]'>
+                <Badge
+                  className='text-neutral-950 h-full'
+                  variant={'secondary'}
+                >
+                  <span className='text-md-regular'>Rp</span>
+                </Badge>
+              </InputGroupAddon>
+            </InputGroup>
+            <InputGroup>
+              <InputGroupInput
+                placeholder='Maximum Price'
+                onChange={(e) =>
+                  setPriceMax(
+                    e.target.value ? Number(e.target.value) : undefined
+                  )
+                }
+              />
+              <InputGroupAddon className='h-[54px]'>
+                <Badge
+                  className='text-neutral-950 h-full'
+                  variant={'secondary'}
+                >
+                  <span className='text-md-regular'>Rp</span>
+                </Badge>
+              </InputGroupAddon>
+            </InputGroup>
           </div>
+
           <hr className='border-neutral-300' />
 
           {/* Rating */}
           <div className='space-y-2.5 px-4'>
             <div className='text-lg-extrabold'>Rating</div>
-            <div className='space-y-4'>
-              {[5, 4, 3, 2, 1].map((star) => (
-                <div key={star} className='flex items-center gap-2'>
-                  <Checkbox
-                    checked={rating === star}
-                    onCheckedChange={() =>
-                      setRating(rating === star ? undefined : star)
-                    }
-                  />
-                  <div className='flex items-center gap-1'>
-                    <Star className='h-4 w-4 fill-[#FFAB0D] stroke-transparent' />
-                    <span className='text-md-regular'>{star}</span>
-                  </div>
+
+            {[5, 4, 3, 2, 1].map((star) => (
+              <div key={star} className='flex items-center gap-2'>
+                <Checkbox
+                  checked={rating === star}
+                  onCheckedChange={() =>
+                    setRating(rating === star ? undefined : star)
+                  }
+                />
+                <div className='flex items-center gap-1'>
+                  <Star className='h-4 w-4 fill-[#FFAB0D] stroke-transparent' />
+                  <span className='text-md-regular'>{star}</span>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
+
         {/* Right side */}
         <div className='grid grid-cols-2 gap-5 h-fit'>
-          {resto?.restaurants?.length === 0 ? (
-            <div className='col-span-1 text-neutral-500 '>
+          {restoLoading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <CardStore key={i} isLoading />
+            ))
+          ) : filteredRestaurants.length === 0 ? (
+            <div className='col-span-2 text-neutral-500'>
               <p className='text-lg font-semibold'>No restaurant found</p>
               <p className='text-sm'>Try adjusting your filter</p>
             </div>

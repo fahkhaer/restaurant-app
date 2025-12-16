@@ -9,6 +9,7 @@ type MyOrderCardProps = {
   order?: CartRestaurant;
   rightContent?: string | ReactNode;
   showQtyControl?: boolean;
+  isLoading?: boolean;
 };
 
 export default function CartCard({

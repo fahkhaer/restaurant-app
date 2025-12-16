@@ -8,13 +8,18 @@ import { Link } from 'react-router-dom';
 function Cart() {
   const { data, isLoading, isError } = GetCart();
 
-  if (isLoading) return <p>Loading profile...</p>;
-  if (isError) return <p>Error loading profile</p>;
+  if (isError) return <p>Error loading cart</p>;
+
   return (
     <Container className='mb-25'>
       <h1 className='pb-8'>My Cart</h1>
+
       <div className='space-y-5'>
-        {data?.cart?.length > 0 ? (
+        {isLoading ? (
+          Array.from({ length: 2 }).map((_, i) => (
+            <CartCard key={i} isLoading />
+          ))
+        ) : data?.cart?.length > 0 ? (
           data?.cart?.map((item: CartRestaurant) => (
             <CartCard
               key={item?.restaurant?.id}

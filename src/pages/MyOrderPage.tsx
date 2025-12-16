@@ -23,7 +23,6 @@ function MyOrderPage() {
     reviewData?.data.reviews.map((r) => r.transactionId)
   );
 
-  if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
 
   const handleStatusChange = (value: string) => {
@@ -68,7 +67,11 @@ function MyOrderPage() {
               value={tab}
               className='flex flex-col mt-0 space-y-5 divide-neutral-300'
             >
-              {(data?.orders?.length ?? 0) > 0 ? (
+              {isLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <MyOrderCard key={i} isLoading />
+                ))
+              ) : (data?.orders?.length ?? 0) > 0 ? (
                 data?.orders?.map((order: Order) => (
                   <MyOrderCard
                     key={order.id}
