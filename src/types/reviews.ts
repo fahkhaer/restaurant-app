@@ -21,6 +21,7 @@ export type CreateReviewPayload = {
 export type ReviewUser = {
   id: number;
   name: string;
+  avatar?: string;
 };
 
 export type ReviewRestaurant = {

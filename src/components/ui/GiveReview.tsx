@@ -96,7 +96,7 @@ function GiveReview({
                   <Star
                     key={i}
                     onClick={() => !isPending && setStar(i + 1)}
-                    className='size-[40px] cursor-pointer'
+                    className='size-10 cursor-pointer'
                     stroke={i < star ? '#FFAB0D' : '#A4A7AE'}
                     fill={i < star ? '#FFAB0D' : '#A4A7AE'}
                   />
@@ -106,7 +106,7 @@ function GiveReview({
               <Textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className='mt-4 h-[160px] resize-none'
+                className='mt-4 h-40 resize-none'
                 placeholder='Please share your thoughts'
               />
             </DialogDescription>
