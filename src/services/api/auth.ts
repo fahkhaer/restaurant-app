@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/features/store';
 import type { User } from '@/types/auth';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // ------------------- LOGIN -------------------
 export function useLogin() {
@@ -50,4 +51,19 @@ export function useRegister() {
       localStorage.setItem('user', JSON.stringify(data.user));
     },
   });
+}
+
+// ------------------- LOGOUT -------------------
+export function useLogout() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  return () => {
+    // hapus token & user di redux & localStorage
+    dispatch(setToken(''));
+    dispatch(setUser(null));
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
 }

@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/features/store';
 import { GetProfile } from '@/services/api/profile';
 import { GetCart } from '@/services/api/cart';
+import { useLogout } from '@/services/api/auth';
 
 type NavbarProps = {
   variant?: 'main' | 'default';
@@ -23,6 +24,8 @@ type NavbarProps = {
 
 export default function Navbar({ variant = 'default' }: NavbarProps) {
   const { data } = GetCart();
+    const logout = useLogout();
+  
   const cartCount = data?.summary?.totalItems ?? 0;
 
   const user = useAppSelector((s) => s.auth.user);
@@ -198,9 +201,9 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
 
                   <DropdownMenuItem>
                     <Icon icon='lets-icons:sign-out' width='20' height='20' />
-                    <span className='text-sm-medium text-neutral-950'>
+                    <button onClick={logout} className='text-sm-medium text-neutral-950'>
                       Logout
-                    </span>
+                    </button>
                   </DropdownMenuItem>
                 </>
               )}

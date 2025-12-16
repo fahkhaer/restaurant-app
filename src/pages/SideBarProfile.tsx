@@ -9,9 +9,11 @@ import { Button } from '@/components/ui/button';
 import { useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import { GetProfile } from '@/services/api/profile';
+import { useLogout } from '@/services/api/auth';
 
 function SideBarProfile() {
   const { data } = GetProfile();
+  const logout = useLogout();
 
   const location = useLocation();
   const defaultTab = useMemo(() => {
@@ -76,7 +78,9 @@ function SideBarProfile() {
               hover:bg-neutral-100'
             >
               <Icon icon='lets-icons:sign-out' width='24' height='24' />
-              <span className='text-md-medium'>Logout</span>
+              <button onClick={logout} type='button' className='text-md-medium'>
+                Logout
+              </button>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -111,8 +115,6 @@ function SideBarProfile() {
           <TabsContent className='m-0' value='my-order'>
             <MyOrderPage />
           </TabsContent>
-          {/* logout */}
-          <TabsContent value='logout' />
         </div>
       </Tabs>
     </Container>
