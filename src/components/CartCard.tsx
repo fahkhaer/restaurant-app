@@ -8,11 +8,16 @@ import { useDeleteCartItem, useUpdateCartItem } from '@/services/api/cart';
 type MyOrderCardProps = {
   order?: CartRestaurant;
   rightContent?: string | ReactNode;
+  showQtyControl?: boolean;
 };
 
-export default function CartCard({ order, rightContent }: MyOrderCardProps) {
+export default function CartCard({
+  order,
+  rightContent,
+  showQtyControl,
+}: MyOrderCardProps) {
   const name = order?.restaurant.name ?? 'unknown';
-  const total = order?.subtotal;
+  const total = order?.subtotal.toLocaleString() ?? '0';
   const updateCart = useUpdateCartItem();
   const deleteCart = useDeleteCartItem();
 
@@ -40,7 +45,7 @@ export default function CartCard({ order, rightContent }: MyOrderCardProps) {
                 variant='flex'
                 imgClassName='size-22 rounded-2xl'
                 name={menu}
-                price={price?.toString()}
+                price={`Rp${price?.toLocaleString()}`}
                 image={img}
                 rightContent={
                   <AddQty
@@ -59,9 +64,11 @@ export default function CartCard({ order, rightContent }: MyOrderCardProps) {
                 }
               />
               <div>
-                <span className='text-md-medium'>
-                  {qty} x {price}
-                </span>
+                {showQtyControl ? (
+                  <span className='text-md-medium'>
+                    {qty} x {price}
+                  </span>
+                ) : null}
               </div>
             </>
           );
