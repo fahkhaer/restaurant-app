@@ -48,3 +48,14 @@ export interface GetBestSellerResponse {
     restaurants: Restaurant[];
   };
 }
+
+export type GetRestaurantsParams = {
+  location?: string;
+  range?: number;
+  priceMin?: number;
+  priceMax?: number;
+  rating?: number;
+  category?: string;
+  page?: number;
+  limit?: number;
+};

@@ -1,4 +1,5 @@
 import { baseUrl } from '@/config/constants';
+import type { GetRestaurantsParams } from '@/types/restaurant';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -63,5 +64,24 @@ export function GetBestSeller({ page, limit, category }: GetBestSellerParams) {
 
       return res.data.data.restaurants;
     },
+  });
+}
+
+export function GetRestaurants(params: GetRestaurantsParams) {
+  return useQuery({
+    queryKey: ['restaurants', params],
+    queryFn: async () => {
+      const token = localStorage.getItem('token');
+
+      const res = await axios.get(`${baseUrl}/api/resto`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params,
+      });
+
+      return res.data.data;
+    },
+    keepPreviousData: true,
   });
 }
