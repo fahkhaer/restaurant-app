@@ -7,15 +7,9 @@ import dayjs from 'dayjs';
 type MyOrderCardProps = {
   order?: Order;
   rightContent?: string | ReactNode;
-  showQtyControl?: boolean;
 };
 
-export default function MyOrderCard({
-  order,
-  rightContent,
-  showQtyControl,
-}: MyOrderCardProps) {
-  
+export default function MyOrderCard({ order, rightContent }: MyOrderCardProps) {
   return (
     <div className='shadow-card space-y-5 p-5 rounded-2xl'>
       <div className='flex flex-col gap-1'>
@@ -48,13 +42,6 @@ export default function MyOrderCard({
             item?.price?.toLocaleString() ?? '0'
           }`}
           image={item.image ?? '/src/assets/images/price.png'}
-          rightContent={
-            showQtyControl ? (
-              <div>
-                <span className='text-md-medium'></span>
-              </div>
-            ) : null
-          }
         />
       ))}
 

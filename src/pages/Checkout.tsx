@@ -158,7 +158,7 @@ function Checkout() {
                 <CardMenu
                   key={item.id}
                   name={item?.menu?.foodName || 'Unknown'}
-                  price={`Rp${item?.itemTotal?.toString()} || '0'`}
+                  price={`Rp${item?.itemTotal?.toLocaleString() || '0'} `}
                   imgClassName='rounded-2xl items-center size-20'
                   variant='flex'
                   image={item?.menu?.image}
