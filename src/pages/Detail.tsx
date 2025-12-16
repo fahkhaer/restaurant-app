@@ -1,7 +1,6 @@
 import TabsMenu from '@/components/TabsMenu';
 import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
-import LoadMoreButton from '@/components/ui/LoadMoreButton';
 import ReviewersCard from '@/components/ui/ReviewersCard';
 import { GetDetail } from '@/services/api/restaurants';
 import Container from '@/styles/Container';
@@ -14,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import DataAlert from '@/components/ui/custom/dataAlert';
 import { Skeleton } from '@/components/ui/skeleton';
+import LoadMoreButton from '@/components/ui/LoadMoreButton';
 
 function Detail() {
   const { id } = useParams<{ id: string }>();

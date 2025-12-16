@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Button } from './button';
 
-type LoadMoreButtonProps = {
+export type LoadMoreButtonProps = {
   className?: string;
   onClick?: () => void;
 };
