@@ -6,25 +6,46 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group';
-import { GetRecomendation } from '@/services/api/restaurants';
+import { GetRestaurants } from '@/services/api/restaurants';
 import Container from '@/styles/Container';
-import type { RecommendationItem } from '@/types/restaurant';
+import type { Restaurant } from '@/types/restaurant';
 import { Star } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const dummyCategories = [
   { id: 1, name: 'Nearby' },
-  { id: 2, name: 'Within 1 km' },
-  { id: 3, name: 'Within 3 km' },
-  { id: 3, name: 'Within 5 km' },
+  { id: 2, name: 'Within 1 km', value: 1 },
+  { id: 3, name: 'Within 3 km', value: 2 },
+  { id: 3, name: 'Within 5 km', value: 3 },
 ];
 
 function Category() {
-  const { data, isLoading, isError } = GetRecomendation();
-  console.log('cateogryu', data);
+  // klik filter
+  const [range, setRange] = useState<number | undefined>();
+  const [priceMin, setPriceMin] = useState<number | undefined>();
+  const [priceMax, setPriceMax] = useState<number | undefined>();
+  const [rating, setRating] = useState<number | undefined>();
+  const [category, setCategory] = useState<string | undefined>();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error</p>;
+  const {
+    data: resto,
+    isLoading: restoLoading,
+    isError: restoError,
+  } = GetRestaurants({
+    location: 'Jakarta',
+    range,
+    priceMin,
+    priceMax,
+    rating,
+    category,
+    page: 1,
+    limit: 20,
+  });
+  console.log('filterr', resto);
+
+  if (restoLoading) return <p>Loading...</p>;
+  if (restoError) return <p>Error</p>;
 
   return (
     <Container>
@@ -37,10 +58,17 @@ function Category() {
               <span className='text-md-extrabold'>FILTER</span>
               <div className='text-lg-extrabold'>Distance</div>
 
-              {dummyCategories.map((item) => (
-                <div key={item.id} className='flex items-center gap-2'>
-                  <Checkbox />
-                  <label className='text-md-regular'>{item.name}</label>
+              {dummyCategories.map((category) => (
+                <div key={category.id} className='flex items-center gap-2'>
+                  <Checkbox
+                    checked={range === category.value}
+                    onCheckedChange={() =>
+                      setRange(
+                        range === category.value ? undefined : category.value
+                      )
+                    }
+                  />
+                  <label className='text-md-regular'>{category.name}</label>
                 </div>
               ))}
             </div>
@@ -54,7 +82,10 @@ function Category() {
               <div className='text-lg-extrabold'>Price</div>
 
               <InputGroup>
-                <InputGroupInput placeholder='Minimum Price' />
+                <InputGroupInput
+                  placeholder='Minimum Price'
+                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                />
                 <InputGroupAddon className='h-[54px]'>
                   <Badge
                     className='text-neutral-950 h-full'
@@ -65,7 +96,10 @@ function Category() {
                 </InputGroupAddon>
               </InputGroup>
               <InputGroup>
-                <InputGroupInput placeholder='Maximum Price' />
+                <InputGroupInput
+                  placeholder='Maximum Price'
+                  onChange={(e) => setPriceMax(Number(e.target.value))}
+                />
                 <InputGroupAddon className='h-[54px]'>
                   <Badge
                     className='text-neutral-950 h-full'
@@ -85,7 +119,12 @@ function Category() {
             <div className='space-y-4'>
               {[5, 4, 3, 2, 1].map((star) => (
                 <div key={star} className='flex items-center gap-2'>
-                  <Checkbox />
+                  <Checkbox
+                    checked={rating === star}
+                    onCheckedChange={() =>
+                      setRating(rating === star ? undefined : star)
+                    }
+                  />
                   <div className='flex items-center gap-1'>
                     <Star className='h-4 w-4 fill-[#FFAB0D] stroke-transparent' />
                     <span className='text-md-regular'>{star}</span>
@@ -96,18 +135,21 @@ function Category() {
           </div>
         </div>
         {/* Right side */}
-        <div className='gap-5 grid grid-cols-2 h-fit'>
-          {data.map((item: RecommendationItem) => (
-            <Link key={item.id} to={`/detail/${item.id}`}>
-              <CardStore
-                name={item.name}
-                logo={item.logo}
-                rating={item.star}
-                location={item.place}
-                // coordinate={distanceKm}
-              />
-            </Link>
-          ))}
+        <div className='grid grid-cols-2 gap-5 h-fit'>
+          {resto?.restaurants?.map((item: Restaurant) => {
+            console.log('ini', resto.restaurants);
+
+            return (
+              <Link key={item.id} to={`/detail/${item.id}`}>
+                <CardStore
+                  name={item.name}
+                  logo={item.logo}
+                  rating={item.star}
+                  location={item.place}
+                />
+              </Link>
+            );
+          })}
         </div>
       </section>
     </Container>
