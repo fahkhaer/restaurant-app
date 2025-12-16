@@ -5,7 +5,7 @@ import { getDistanceKm } from '@/lib/utils/distance';
 import { GetBestSeller, GetRecomendation } from '@/services/api/restaurants';
 import type { RecommendationItem } from '@/types/restaurant';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Home() {
   const { data, isLoading, isError } = GetRecomendation();
@@ -18,20 +18,26 @@ function Home() {
     category:
       activeFilter === 'Best Seller'
         ? 'best-seller'
-        : activeFilter === 'Nearby'
-        ? 'nearby'
+        : activeFilter === 'All Restaurant'
+        ? 'all-restaurant'
         : undefined,
   });
 
   //coordinate
   const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum
+  const navigate = useNavigate();
 
   if (isLoading) return <p>Loading...</p>;
   if (loadingBestseller) return <p>Loading...</p>;
 
   if (isError) return <p>Error</p>;
 
-  const restaurants = activeFilter === 'Best Seller' ? bestseller ?? [] : [];
+  const restaurants =
+    activeFilter === 'Best Seller'
+      ? bestseller ?? []
+      : activeFilter === 'All Restaurant'
+      ? data ?? []
+      : [];
 
   const filter = [
     { desc: 'All Restaurant' },
@@ -49,7 +55,11 @@ function Home() {
           return (
             <button
               key={i}
-              onClick={() => setActiveFilter(item.desc)}
+              onClick={() => {
+                if (item.desc === 'Category') {
+                  navigate('/category');
+                } else setActiveFilter(item.desc);
+              }}
               className={`shadow-card rounded-2xl flex flex-col p-2 gap-2 flex-1 min-w-26.5 max-w-40.5 ${
                 activeFilter === item.desc
                   ? 'bg-blue-200 ring-2 ring-blue-300'
