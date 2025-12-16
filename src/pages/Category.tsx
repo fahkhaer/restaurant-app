@@ -6,7 +6,9 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group';
+import { GetRecomendation } from '@/services/api/restaurants';
 import Container from '@/styles/Container';
+import type { RecommendationItem } from '@/types/restaurant';
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -17,23 +19,13 @@ const dummyCategories = [
   { id: 3, name: 'Within 5 km' },
 ];
 
-const dummyBooks = [
-  {
-    id: 1,
-    title: 'Book Title',
-    author: 'Author Name',
-    image: '/cover-off.png',
-    rating: 4.5,
-  },
-  {
-    id: 2,
-    title: 'Another Book',
-    author: 'Writer',
-    image: '/cover-off.png',
-    rating: 5,
-  },
-];
 function Category() {
+  const { data, isLoading, isError } = GetRecomendation();
+  console.log('cateogryu', data);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+
   return (
     <Container>
       <h1 className='pb-5'>All Restaurant</h1>
@@ -104,26 +96,15 @@ function Category() {
           </div>
         </div>
         {/* Right side */}
-        <div className='flex gap-4 w-full'>
-          {dummyBooks.map((item) => (
-            <Link key={item.id} to={`/detail/${item.id}`} className='block'>
+        <div className='gap-5 grid grid-cols-2 h-fit'>
+          {data.map((item: RecommendationItem) => (
+            <Link key={item.id} to={`/detail/${item.id}`}>
               <CardStore
-              //   name={item.title}
-              //   author={item.author}
-              //   image={item.image}
-              //   rating={item.rating}
-              />
-              <CardStore
-              //   name={item.title}
-              //   author={item.author}
-              //   image={item.image}
-              //   rating={item.rating}
-              />
-              <CardStore
-              //   name={item.title}
-              //   author={item.author}
-              //   image={item.image}
-              //   rating={item.rating}
+                name={item.name}
+                logo={item.logo}
+                rating={item.star}
+                location={item.place}
+                // coordinate={distanceKm}
               />
             </Link>
           ))}
