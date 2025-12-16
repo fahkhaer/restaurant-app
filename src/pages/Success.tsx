@@ -8,8 +8,6 @@ function Success() {
   const location = useLocation();
   const transaction = location.state?.transaction;
 
-  console.log('transaction', transaction);
-
   return (
     <section className='flex-center h-screen'>
       <div>

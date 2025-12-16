@@ -23,8 +23,6 @@ function Home() {
         : undefined,
   });
 
-  console.log('debesr', bestseller);
-
   //coordinate
   const userLocation = { lat: -6.2, long: 106.8 }; // Contoh: lokasi user // belum
 
@@ -48,7 +46,6 @@ function Home() {
     <section className='custom-container mb-25'>
       <div className='flex justify-between flex-wrap gap-3 my-10'>
         {filter.map((item, i) => {
-          console.log('itemnihh', item);
           return (
             <button
               key={i}

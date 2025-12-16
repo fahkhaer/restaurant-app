@@ -16,7 +16,6 @@ function MyOrderPage() {
   const [status, setStatus] = useState<OrderStatus>('done');
 
   const { data, isLoading, isError } = useMyOrders(status);
-  console.log('orderangua', data);
 
   const { data: reviewData } = useMyReviews();
   //review success

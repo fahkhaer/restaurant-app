@@ -60,8 +60,7 @@ export function GetBestSeller({ page, limit, category }: GetBestSellerParams) {
           category,
         },
       });
-      console.log('apirestt', res.data.data.restaurants);
-      
+
       return res.data.data.restaurants;
     },
   });

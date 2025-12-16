@@ -23,7 +23,6 @@ export function useCreateReview() {
           },
         }
       );
-      console.log('ini review', res);
 
       return res.data;
     },
