@@ -9,107 +9,99 @@ import { useLogin, useRegister } from '@/services/api/auth';
 import { Eye, EyeOff } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
+type RegisterForm = {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+};
 
 function AuthPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  // API
   const loginMutation = useLogin();
   const registerMutation = useRegister();
-
-  // Routing
   const location = useLocation();
+
   const defaultTab = useMemo(
     () => (location.pathname.includes('register') ? 'register' : 'login'),
     [location.pathname]
   );
 
-  // Input state
-  const [emailLogin, setEmailLogin] = useState('');
-  const [passwordLogin, setPasswordLogin] = useState('');
-  const [loginErrors, setLoginErrors] = useState<string | null>(null);
-
-  // Register input state
-  const [name, setName] = useState('');
-  const [emailRegister, setEmailRegister] = useState('');
-  const [phone, setPhone] = useState('');
-  const [passwordRegister, setPasswordRegister] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [registerErrors, setRegisterErrors] = useState<string | null>(null);
-
-  // Show/hide password
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  //helper
-  const getErrorMessage = (
-    error: unknown,
-    fallback = 'Something went wrong'
-  ) => {
-    if (axios.isAxiosError(error)) {
-      return (error.response?.data?.message as string) || fallback;
-    }
-    return fallback;
-  };
+  const [apiLoginError, setApiLoginError] = useState<string | null>(null);
+  const [apiRegisterError, setApiRegisterError] = useState<string | null>(null);
 
-  // on submit login
-  const onSubmit = () => {
-    const result = loginSchema.safeParse({
-      email: emailLogin,
-      password: passwordLogin,
-    });
-    if (!result.success) {
-      setLoginErrors(result.error.errors.map((e) => e.message).join(', '));
-      return;
-    }
-    setLoginErrors(null);
+  // ---------------- FORM ----------------
+  const {
+    register: loginRegister,
+    handleSubmit: handleLoginSubmit,
+    formState: { errors: loginErrors },
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+  });
 
-    loginMutation.mutate(result.data, {
-      onSuccess: (data) => {
-        dispatch(setUser(data.user));
-        localStorage.setItem('token', data.token);
+  const {
+    register: registerRegister,
+    handleSubmit: handleRegisterSubmit,
+    formState: { errors: registerErrors },
+  } = useForm<RegisterForm>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onLogin = (data: LoginForm) => {
+    setApiLoginError(null);
+    loginMutation.mutate(data, {
+      onSuccess: (res) => {
+        dispatch(setUser(res.user));
+        localStorage.setItem('token', res.token);
         navigate('/');
       },
-      onError: (error: unknown) =>
-        setLoginErrors(getErrorMessage(error, 'Login failed')),
+      onError: (err) => {
+        if (axios.isAxiosError(err)) {
+          setApiLoginError(err.response?.data?.message || 'Login failed');
+        } else {
+          setApiLoginError('Login failed');
+        }
+      },
     });
   };
 
-  //on submit register
-  const onSubmitRegister = () => {
-    const result = registerSchema.safeParse({
-      name,
-      email: emailRegister,
-      phone,
-      password: passwordRegister,
-      confirmPassword,
-    });
-    if (!result.success) {
-      setRegisterErrors(result.error.errors.map((e) => e.message).join(', '));
+  const onRegister = (data: RegisterForm) => {
+    setApiRegisterError(null);
+    if (data.password !== data.confirmPassword) {
+      setApiRegisterError('Passwords do not match!');
       return;
     }
-
-    if (passwordRegister !== confirmPassword) {
-      setRegisterErrors('Passwords do not match!');
-      return;
-    }
-
-    setRegisterErrors(null);
 
     registerMutation.mutate(
-      { name, email: emailRegister, phone, password: passwordRegister },
+      {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+      },
       {
         onSuccess: () => navigate('/'),
-        onError: (error: unknown) => {
-          if (axios.isAxiosError(error)) {
-            const msg =
-              (error.response?.data?.errors?.[0]?.msg as string) ||
-              'Registration failed';
-            setRegisterErrors(msg);
+        onError: (err) => {
+          if (axios.isAxiosError(err)) {
+            setApiRegisterError(
+              err.response?.data?.errors?.[0]?.msg || 'Registration failed'
+            );
           } else {
-            setRegisterErrors('Registration failed');
+            setApiRegisterError('Registration failed');
           }
         },
       }
@@ -117,27 +109,25 @@ function AuthPage() {
   };
 
   return (
-    <section className='flex'>
+    <section className='flex min-h-screen'>
       {/* Left Image */}
       <img
-        className='h-screen w-1/2 object-cover'
-        src={'/src/assets/images/Detail1.png'}
+        className='hidden md:block w-1/2 object-cover'
+        src='/src/assets/images/Detail1.png'
         alt='food-detail'
       />
 
-      <div className='mx-auto h-screen max-w-sm flex flex-col justify-center gap-5'>
-        {/* Logo */}
-        <Link to={'/'}>
-          <div className='size-12 w-fit gap-4 flex items-center'>
+      {/* Right Form */}
+      <div className='mx-auto h-screen max-w-sm flex flex-col justify-center gap-5 px-4'>
+        <Link to='/'>
+          <div className='flex items-center gap-4 w-fit'>
             <img
               className='h-auto'
-              src='src/assets/icons/logored.png'
-              alt='Logo-text'
-              style={{ width: 'clamp(2.5rem, 3.5vw, 2.63rem)' }}
+              src='/src/assets/icons/logored.png'
+              alt='Logo'
+              style={{ width: 'clamp(2.5rem,3.5vw,2.63rem)' }}
             />
-            <p className='hidden md:block items-center display-md-extrabold'>
-              Foody
-            </p>
+            <p className='hidden md:block display-md-extrabold'>Foody</p>
           </div>
         </Link>
 
@@ -149,7 +139,7 @@ function AuthPage() {
 
         {/* TABS */}
         <Tabs defaultValue={defaultTab}>
-          <TabsList className='w-full mb-2 rounded-2xl h-14'>
+          <TabsList className='w-full mb-4 rounded-2xl h-14'>
             <TabsTrigger className='w-1/2' value='login'>
               Sign in
             </TabsTrigger>
@@ -160,23 +150,26 @@ function AuthPage() {
 
           {/* ================= LOGIN ================= */}
           <TabsContent value='login'>
-            <div className='space-y-5 w-[374px]'>
-              <Input
-                placeholder='Email'
-                type='email'
-                value={emailLogin}
-                onChange={(e) => setEmailLogin(e.target.value)}
-              />
+            <form
+              onSubmit={handleLoginSubmit(onLogin)}
+              className='space-y-4 w-[374px]'
+            >
+              <div>
+                <Input placeholder='Email' {...loginRegister('email')} />
+                {loginErrors.email && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {loginErrors.email.message}
+                  </p>
+                )}
+              </div>
 
               <div className='relative'>
                 <Input
                   placeholder='Password'
                   type={showPassword ? 'text' : 'password'}
-                  value={passwordLogin}
-                  onChange={(e) => setPasswordLogin(e.target.value)}
+                  {...loginRegister('password')}
                   className='pr-10'
                 />
-
                 <button
                   type='button'
                   onClick={() => setShowPassword(!showPassword)}
@@ -184,43 +177,66 @@ function AuthPage() {
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
+                {loginErrors.password && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {loginErrors.password.message}
+                  </p>
+                )}
               </div>
-              {loginErrors && (
-                <p className='text-red-500 text-sm'>{loginErrors}</p>
+
+              {apiLoginError && (
+                <p className='text-red-500 text-sm'>{apiLoginError}</p>
               )}
-              <Button className='w-full' onClick={onSubmit}>
+
+              <Button type='submit' className='w-full'>
                 Login
               </Button>
-            </div>
+            </form>
           </TabsContent>
 
           {/* ================= REGISTER ================= */}
           <TabsContent value='register'>
-            <div className='w-full space-y-5'>
-              <Input
-                placeholder='Name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Input
-                placeholder='Email'
-                value={emailRegister}
-                onChange={(e) => setEmailRegister(e.target.value)}
-              />
-              <Input
-                placeholder='Number Phone'
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                type='number'
-              />
+            <form
+              onSubmit={handleRegisterSubmit(onRegister)}
+              className='space-y-4 w-[374px]'
+            >
+              <div>
+                <Input placeholder='Name' {...registerRegister('name')} />
+                {registerErrors.name && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {registerErrors.name.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Input placeholder='Email' {...registerRegister('email')} />
+                {registerErrors.email && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {registerErrors.email.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Input
+                  placeholder='Phone'
+                  type='number'
+                  {...registerRegister('phone')}
+                />
+                {registerErrors.phone && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {registerErrors.phone.message}
+                  </p>
+                )}
+              </div>
 
               {/* Password */}
               <div className='relative'>
                 <Input
                   placeholder='Password'
                   type={showPassword ? 'text' : 'password'}
-                  value={passwordRegister}
-                  onChange={(e) => setPasswordRegister(e.target.value)}
+                  {...registerRegister('password')}
                   className='pr-10'
                 />
                 <button
@@ -230,6 +246,11 @@ function AuthPage() {
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
+                {registerErrors.password && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {registerErrors.password.message}
+                  </p>
+                )}
               </div>
 
               {/* Confirm Password */}
@@ -237,8 +258,7 @@ function AuthPage() {
                 <Input
                   placeholder='Confirm Password'
                   type={showConfirm ? 'text' : 'password'}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  {...registerRegister('confirmPassword')}
                   className='pr-10'
                 />
                 <button
@@ -248,14 +268,21 @@ function AuthPage() {
                 >
                   {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
+                {registerErrors.confirmPassword && (
+                  <p className='text-red-500 text-xs mt-2'>
+                    {registerErrors.confirmPassword.message}
+                  </p>
+                )}
               </div>
-              {registerErrors && (
-                <p className='text-red-500 text-sm'>{registerErrors}</p>
+
+              {apiRegisterError && (
+                <p className='text-red-500 text-sm'>{apiRegisterError}</p>
               )}
-              <Button className='w-full' onClick={onSubmitRegister}>
+
+              <Button type='submit' className='w-full'>
                 Register
               </Button>
-            </div>
+            </form>
           </TabsContent>
         </Tabs>
       </div>
