@@ -22,3 +22,29 @@ export type RecommendationItem = {
   sampleMenus: SampleMenu[];
   isFrequentlyOrdered: boolean;
 };
+
+export interface PriceRange {
+  min: number;
+  max: number;
+}
+
+export interface Restaurant {
+  id: number;
+  name: string;
+  star: number;
+  place: string;
+  logo: string;
+  images: string[];
+  category: string;
+  reviewCount: number;
+  menuCount: number;
+  priceRange: PriceRange;
+}
+
+export interface GetBestSellerResponse {
+  success: boolean;
+  message: string;
+  data: {
+    restaurants: Restaurant[];
+  };
+}

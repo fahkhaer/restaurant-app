@@ -38,3 +38,31 @@ export function GetDetail(id?: string) {
     refetchOnReconnect: true,
   });
 }
+
+type GetBestSellerParams = {
+  page: number;
+  limit: number;
+  category?: string;
+};
+
+export function GetBestSeller({ page, limit, category }: GetBestSellerParams) {
+  return useQuery({
+    queryKey: ['best-seller', page, limit, category],
+    queryFn: async () => {
+      const token = localStorage.getItem('token');
+      const res = await axios.get(`${baseUrl}/api/resto/best-seller`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page,
+          limit,
+          category,
+        },
+      });
+      console.log('apirestt', res.data.data.restaurants);
+      
+      return res.data.data.restaurants;
+    },
+  });
+}
