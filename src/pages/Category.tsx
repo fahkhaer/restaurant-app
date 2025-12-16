@@ -46,16 +46,28 @@ function Category() {
   };
   console.log('filterr', resto);
 
-  //rating filter
   const filteredRestaurants = useMemo(() => {
     if (!resto?.restaurants) return [];
 
-    if (rating == null) return resto.restaurants;
+    return resto.restaurants.filter((item: Restaurant) => {
+      // rating
+      if (rating != null && Math.floor(item.star) !== rating) {
+        return false;
+      }
 
-    return resto.restaurants.filter(
-      (item: Restaurant) => Math.floor(item.star) === rating
-    );
-  }, [resto?.restaurants, rating]);
+      // price min
+      if (priceMin != null && item.priceRange.min < priceMin) {
+        return false;
+      }
+
+      // price max
+      if (priceMax != null && item.priceRange.max > priceMax) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [resto?.restaurants, rating, priceMin, priceMax]);
 
   if (restoLoading) return <p>Loading...</p>;
   if (restoError) return <p>Error</p>;
