@@ -16,7 +16,33 @@ export function useLogin() {
     },
 
     onSuccess: (data) => {
+      dispatch(setToken(data.token));
+      dispatch(setUser(data.user));
 
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+    },
+  });
+}
+
+// ------------------- REGISTER -------------------
+export function useRegister() {
+  const dispatch = useAppDispatch();
+
+  return useMutation({
+    mutationFn: async (payload: {
+      name: string;
+      email: string;
+      phone: string;
+      password: string;
+    }) => {
+      const res = await axios.post(`${baseUrl}/api/auth/register`, payload);
+      console.log(res);
+
+      return res.data.data as { token: string; user: User };
+    },
+
+    onSuccess: (data) => {
       dispatch(setToken(data.token));
       dispatch(setUser(data.user));
 

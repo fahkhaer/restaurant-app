@@ -5,3 +5,10 @@ export type User = {
   phone: string;
   avatar: string | null;
 };
+
+export type RegisterPayload = {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+};

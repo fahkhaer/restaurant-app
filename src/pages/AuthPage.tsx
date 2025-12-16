@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { setUser } from '@/features/auth/authSlice';
 import { useAppDispatch } from '@/features/store';
-import { useLogin } from '@/services/api/auth';
+import { useLogin, useRegister } from '@/services/api/auth';
 import { Eye, EyeOff } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ function AuthPage() {
 
   // API
   const loginMutation = useLogin();
+  const registerMutation = useRegister();
   const dispatch = useAppDispatch();
 
   // Routing
@@ -26,10 +27,18 @@ function AuthPage() {
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
 
+  // Register input state
+  const [name, setName] = useState('');
+  const [emailRegister, setEmailRegister] = useState('');
+  const [phone, setPhone] = useState('');
+  const [passwordRegister, setPasswordRegister] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
   // Show/hide password
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  // on submit login
   const onSubmit = () => {
     const payload = {
       email: emailLogin,
@@ -50,6 +59,30 @@ function AuthPage() {
         console.error(err);
       },
     });
+  };
+
+  //on submit register
+  const onSubmitRegister = () => {
+    if (passwordRegister !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    registerMutation.mutate(
+      {
+        name,
+        email: emailRegister,
+        phone,
+        password: passwordRegister,
+      },
+      {
+        onSuccess: () => {
+          navigate('/');
+        },
+        onError: (err) => {
+          console.error(err);
+        },
+      }
+    );
   };
 
   return (
@@ -131,13 +164,30 @@ function AuthPage() {
           {/* ================= REGISTER ================= */}
           <TabsContent value='register'>
             <div className='w-full space-y-5'>
-              <Input placeholder='Name' type='text' />
-              <Input placeholder='Email' type='email' />
-              <Input placeholder='Number Phone' type='number' />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder='Name'
+                type='text'
+              />
+              <Input
+                onChange={(e) => setEmailRegister(e.target.value)}
+                value={emailRegister}
+                placeholder='Email'
+                type='email'
+              />
+              <Input
+                onChange={(e) => setPhone(e.target.value)}
+                value={phone}
+                placeholder='Number Phone'
+                type='number'
+              />
 
               {/* Password */}
               <div className='relative'>
                 <Input
+                  onChange={(e) => setPasswordRegister(e.target.value)}
+                  value={passwordRegister}
                   placeholder='Password'
                   type={showPassword ? 'text' : 'password'}
                   className='pr-10'
@@ -154,6 +204,8 @@ function AuthPage() {
               {/* Confirm Password */}
               <div className='relative'>
                 <Input
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
                   placeholder='Confirm Password'
                   type={showConfirm ? 'text' : 'password'}
                   className='pr-10'
@@ -167,7 +219,9 @@ function AuthPage() {
                 </button>
               </div>
 
-              <Button className='w-full'>Register</Button>
+              <Button onClick={onSubmitRegister} className='w-full'>
+                Register
+              </Button>
             </div>
           </TabsContent>
         </Tabs>
