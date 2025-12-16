@@ -14,8 +14,11 @@ import { useState } from 'react';
 function MyOrderPage() {
   const [status, setStatus] = useState<OrderStatus>('done');
 
+  //review success
+  const [reviewedTx, setReviewedTx] = useState<string[]>([]);
+
   const { data, isLoading, isError } = useMyOrders(status);
-console.log('orderangua', data);
+  console.log('orderangua', data);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
@@ -67,8 +70,20 @@ console.log('orderangua', data);
                   <MyOrderCard
                     key={order.id}
                     order={order}
-                    showQtyControl
-                    rightContent={<GiveReview />}
+                    rightContent={
+                      <GiveReview
+                        transactionId={order.transactionId}
+                        restaurantId={order.restaurants[0].restaurant.id}
+                        menus={order.restaurants[0].items}
+                        hasReviewed={reviewedTx.includes(order.transactionId)}
+                        onSuccess={() =>
+                          setReviewedTx((prev) => [
+                            ...prev,
+                            order.transactionId,
+                          ])
+                        }
+                      />
+                    }
                   />
                 ))
               ) : (
