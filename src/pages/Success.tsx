@@ -8,6 +8,8 @@ function Success() {
   const location = useLocation();
   const transaction = location.state?.transaction;
 
+  console.log('transaction', transaction);
+
   return (
     <section className='flex-center h-screen'>
       <div>
@@ -52,9 +54,11 @@ function Success() {
 
             <div className='flex justify-between'>
               <div className='space-y-4'>
-                <p className='text-md-medium'>Date ( 2 items)</p>
+                <p className='text-md-medium'>Date</p>
                 <p className='text-md-medium'>Payment Method</p>
-                <p className='text-md-medium'>Price ( 2 items)</p>
+                <p className='text-md-medium'>
+                  Price ( {transaction?.restaurants[0]?.items?.length} items)
+                </p>
                 <p className='text-md-medium'>Delivery Fee </p>
                 <p className='text-md-medium'>Service Fee</p>
               </div>

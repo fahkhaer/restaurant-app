@@ -14,10 +14,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCheckout } from '@/services/api/checkout';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { X } from 'lucide-react';
+import { useDeleteCartItem } from '@/services/api/cart';
 
 function Checkout() {
   const { data } = GetProfile();
   const buy = useCheckout();
+  const deleteCartItem = useDeleteCartItem();
 
   //ambil data dari restoran
   const location = useLocation();
@@ -81,8 +83,11 @@ function Checkout() {
     };
 
     buy.mutate(payload, {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         console.log('Checkout success:', res);
+        await Promise.all(
+          order.items.map((item) => deleteCartItem.mutateAsync(item.id))
+        );
         navigate('/success', { state: { transaction: res.data.transaction } });
       },
       onError: (err) => {
