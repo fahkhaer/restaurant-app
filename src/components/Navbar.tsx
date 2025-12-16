@@ -15,16 +15,16 @@ import { MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/features/store';
 import { GetProfile } from '@/services/api/profile';
+import { GetCart } from '@/services/api/cart';
 
 type NavbarProps = {
   variant?: 'main' | 'default';
-  cartCount?: number;
 };
 
-export default function Navbar({
-  variant = 'default',
-  cartCount = 0,
-}: NavbarProps) {
+export default function Navbar({ variant = 'default' }: NavbarProps) {
+  const { data } = GetCart();
+  const cartCount = data?.summary?.totalItems ?? 0;
+
   const user = useAppSelector((s) => s.auth.user);
   const isGuest = !user;
 
@@ -64,8 +64,6 @@ export default function Navbar({
       : 'src/assets/icons/logo.png'
     : 'src/assets/icons/logored.png';
 
-    
-
   return (
     <div
       className={` w-full flex h-20 px-4 md:px-[120px] justify-between items-center transition-all duration-300 ${bgClass} ${bgFixed} `}
@@ -96,8 +94,8 @@ export default function Navbar({
                   width='32'
                   height='32'
                 />
-                <Badge className='absolute left-5 bg-[#EE1D52] text-white h-5 min-w-5 rounded-full'>
-                  1
+                <Badge className='p-1.5 text-center absolute font-bold left-5 bg-[#C12116] text-white size-5 min-w-5 rounded-full'>
+                  {cartCount}
                 </Badge>
               </div>
             </Link>
@@ -133,8 +131,8 @@ export default function Navbar({
                   height='32'
                 />
                 {cartCount > 0 && (
-                  <Badge className='absolute left-5 bg-[#EE1D52] text-white h-5 min-w-5 rounded-full'>
-                    {cartCount}
+                  <Badge className='p-1.5 text-center absolute font-bold left-5 bg-[#C12116] text-white size-5 min-w-5 rounded-full'>
+                    <p>{cartCount}</p>
                   </Badge>
                 )}
               </div>

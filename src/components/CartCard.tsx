@@ -36,7 +36,7 @@ export default function CartCard({
         {order?.items?.map((item) => {
           const menu = item.menu.foodName ?? 'unknown';
           const qty = item.quantity;
-          const price = item.itemTotal;
+          const price = item.menu.price;
           const img = item.menu.image ?? '/src/assets/images/image-off.png';
           return (
             <>
