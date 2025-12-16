@@ -24,8 +24,8 @@ type NavbarProps = {
 
 export default function Navbar({ variant = 'default' }: NavbarProps) {
   const { data } = GetCart();
-    const logout = useLogout();
-  
+  const logout = useLogout();
+
   const cartCount = data?.summary?.totalItems ?? 0;
 
   const user = useAppSelector((s) => s.auth.user);
@@ -63,8 +63,8 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   // logo
   const logoSrc = isMain
     ? scrolled
-      ? 'src/assets/icons/logored.png'
-      : 'src/assets/icons/logo.png'
+      ? '/src/assets/icons/logored.png'
+      : '/src/assets/icons/logo.png'
     : 'src/assets/icons/logored.png';
 
   return (
@@ -201,7 +201,10 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
 
                   <DropdownMenuItem>
                     <Icon icon='lets-icons:sign-out' width='20' height='20' />
-                    <button onClick={logout} className='text-sm-medium text-neutral-950'>
+                    <button
+                      onClick={logout}
+                      className='text-sm-medium text-neutral-950'
+                    >
                       Logout
                     </button>
                   </DropdownMenuItem>
