@@ -9,11 +9,10 @@ export type Review = {
   menus: ReviewMenu[];
 };
 
-
 export type CreateReviewPayload = {
   transactionId: string;
   restaurantId: number;
-  star: number; 
+  star: number;
   comment: string;
   menuIds: number[];
 };
@@ -44,4 +43,23 @@ export type CreateReviewResponse = {
   data: {
     review: Review;
   };
+};
+
+
+export type MyReviewsResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    reviews: MyReview[];
+  };
+};
+
+export type MyReview = {
+  id: number;
+  star: number;
+  comment: string;
+  transactionId: string;
+  createdAt: string;
+  restaurant: ReviewRestaurant;
+  menus: ReviewMenu[];
 };

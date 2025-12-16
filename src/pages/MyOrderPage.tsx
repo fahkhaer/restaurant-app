@@ -8,17 +8,21 @@ import {
   TabsTrigger,
 } from '@/components/ui/custom/tabs';
 import { useMyOrders } from '@/services/api/order';
+import { useMyReviews } from '@/services/api/review';
 import type { Order, OrderStatus } from '@/types/order';
 import { useState } from 'react';
 
 function MyOrderPage() {
   const [status, setStatus] = useState<OrderStatus>('done');
 
-  //review success
-  const [reviewedTx, setReviewedTx] = useState<string[]>([]);
-
   const { data, isLoading, isError } = useMyOrders(status);
   console.log('orderangua', data);
+
+  const { data: reviewData } = useMyReviews();
+  //review success
+  const reviewedTransactionIds = new Set(
+    reviewData?.data.reviews.map((r) => r.transactionId)
+  );
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
@@ -75,13 +79,9 @@ function MyOrderPage() {
                         transactionId={order.transactionId}
                         restaurantId={order.restaurants[0].restaurant.id}
                         menus={order.restaurants[0].items}
-                        hasReviewed={reviewedTx.includes(order.transactionId)}
-                        onSuccess={() =>
-                          setReviewedTx((prev) => [
-                            ...prev,
-                            order.transactionId,
-                          ])
-                        }
+                        hasReviewed={reviewedTransactionIds.has(
+                          order.transactionId
+                        )}
                       />
                     }
                   />
