@@ -4,28 +4,32 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { setUser } from '@/features/auth/authSlice';
 import { useAppDispatch } from '@/features/store';
+import { loginSchema, registerSchema } from '@/schemas/auth';
 import { useLogin, useRegister } from '@/services/api/auth';
 import { Eye, EyeOff } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function AuthPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   // API
   const loginMutation = useLogin();
   const registerMutation = useRegister();
-  const dispatch = useAppDispatch();
 
   // Routing
   const location = useLocation();
-  const defaultTab = useMemo(() => {
-    return location.pathname.includes('register') ? 'register' : 'login';
-  }, [location.pathname]);
+  const defaultTab = useMemo(
+    () => (location.pathname.includes('register') ? 'register' : 'login'),
+    [location.pathname]
+  );
 
   // Input state
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
+  const [loginErrors, setLoginErrors] = useState<string | null>(null);
 
   // Register input state
   const [name, setName] = useState('');
@@ -33,53 +37,80 @@ function AuthPage() {
   const [phone, setPhone] = useState('');
   const [passwordRegister, setPasswordRegister] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [registerErrors, setRegisterErrors] = useState<string | null>(null);
 
   // Show/hide password
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
+  //helper
+  const getErrorMessage = (
+    error: unknown,
+    fallback = 'Something went wrong'
+  ) => {
+    if (axios.isAxiosError(error)) {
+      return (error.response?.data?.message as string) || fallback;
+    }
+    return fallback;
+  };
+
   // on submit login
   const onSubmit = () => {
-    const payload = {
+    const result = loginSchema.safeParse({
       email: emailLogin,
       password: passwordLogin,
-    };
+    });
+    if (!result.success) {
+      setLoginErrors(result.error.errors.map((e) => e.message).join(', '));
+      return;
+    }
+    setLoginErrors(null);
 
-    loginMutation.mutate(payload, {
+    loginMutation.mutate(result.data, {
       onSuccess: (data) => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.user.name);
-        localStorage.setItem('email', data.user.email);
-
         dispatch(setUser(data.user));
-
+        localStorage.setItem('token', data.token);
         navigate('/');
       },
-      onError: (err) => {
-        console.error(err);
-      },
+      onError: (error: unknown) =>
+        setLoginErrors(getErrorMessage(error, 'Login failed')),
     });
   };
 
   //on submit register
   const onSubmitRegister = () => {
-    if (passwordRegister !== confirmPassword) {
-      alert('Passwords do not match!');
+    const result = registerSchema.safeParse({
+      name,
+      email: emailRegister,
+      phone,
+      password: passwordRegister,
+      confirmPassword,
+    });
+    if (!result.success) {
+      setRegisterErrors(result.error.errors.map((e) => e.message).join(', '));
       return;
     }
+
+    if (passwordRegister !== confirmPassword) {
+      setRegisterErrors('Passwords do not match!');
+      return;
+    }
+
+    setRegisterErrors(null);
+
     registerMutation.mutate(
+      { name, email: emailRegister, phone, password: passwordRegister },
       {
-        name,
-        email: emailRegister,
-        phone,
-        password: passwordRegister,
-      },
-      {
-        onSuccess: () => {
-          navigate('/');
-        },
-        onError: (err) => {
-          console.error(err);
+        onSuccess: () => navigate('/'),
+        onError: (error: unknown) => {
+          if (axios.isAxiosError(error)) {
+            const msg =
+              (error.response?.data?.errors?.[0]?.msg as string) ||
+              'Registration failed';
+            setRegisterErrors(msg);
+          } else {
+            setRegisterErrors('Registration failed');
+          }
         },
       }
     );
@@ -129,7 +160,7 @@ function AuthPage() {
 
           {/* ================= LOGIN ================= */}
           <TabsContent value='login'>
-            <div className='space-y-5'>
+            <div className='space-y-5 w-[374px]'>
               <Input
                 placeholder='Email'
                 type='email'
@@ -154,7 +185,9 @@ function AuthPage() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-
+              {loginErrors && (
+                <p className='text-red-500 text-sm'>{loginErrors}</p>
+              )}
               <Button className='w-full' onClick={onSubmit}>
                 Login
               </Button>
@@ -165,31 +198,29 @@ function AuthPage() {
           <TabsContent value='register'>
             <div className='w-full space-y-5'>
               <Input
+                placeholder='Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder='Name'
-                type='text'
               />
               <Input
-                onChange={(e) => setEmailRegister(e.target.value)}
-                value={emailRegister}
                 placeholder='Email'
-                type='email'
+                value={emailRegister}
+                onChange={(e) => setEmailRegister(e.target.value)}
               />
               <Input
-                onChange={(e) => setPhone(e.target.value)}
-                value={phone}
                 placeholder='Number Phone'
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 type='number'
               />
 
               {/* Password */}
               <div className='relative'>
                 <Input
-                  onChange={(e) => setPasswordRegister(e.target.value)}
-                  value={passwordRegister}
                   placeholder='Password'
                   type={showPassword ? 'text' : 'password'}
+                  value={passwordRegister}
+                  onChange={(e) => setPasswordRegister(e.target.value)}
                   className='pr-10'
                 />
                 <button
@@ -204,10 +235,10 @@ function AuthPage() {
               {/* Confirm Password */}
               <div className='relative'>
                 <Input
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  value={confirmPassword}
                   placeholder='Confirm Password'
                   type={showConfirm ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className='pr-10'
                 />
                 <button
@@ -218,8 +249,10 @@ function AuthPage() {
                   {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-
-              <Button onClick={onSubmitRegister} className='w-full'>
+              {registerErrors && (
+                <p className='text-red-500 text-sm'>{registerErrors}</p>
+              )}
+              <Button className='w-full' onClick={onSubmitRegister}>
                 Register
               </Button>
             </div>
