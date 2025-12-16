@@ -63,9 +63,9 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   // logo
   const logoSrc = isMain
     ? scrolled
-      ? '/src/assets/icons/logored.png'
-      : '/src/assets/icons/logo.png'
-    : 'src/assets/icons/logored.png';
+      ? '/src/assets/icons/Logored.png'
+      : '/src/assets/icons/Logo.png'
+    : 'src/assets/icons/Logored.png';
 
   return (
     <div
