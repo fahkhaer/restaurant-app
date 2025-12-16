@@ -6,6 +6,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group';
+import { useDebounce } from '@/hooks/useDebounce';
 import { GetRestaurants } from '@/services/api/restaurants';
 import Container from '@/styles/Container';
 import type { Restaurant } from '@/types/restaurant';
@@ -27,6 +28,10 @@ function Category() {
   const [priceMax, setPriceMax] = useState<number | undefined>();
   const [rating, setRating] = useState<number | undefined>();
 
+const debouncedPriceMin = useDebounce(priceMin, 600);
+const debouncedPriceMax = useDebounce(priceMax, 600);
+
+
   const {
     data: resto,
     isLoading: restoLoading,
@@ -34,8 +39,8 @@ function Category() {
   } = GetRestaurants({
     location: 'Jakarta',
     range,
-    priceMin,
-    priceMax,
+ priceMin: debouncedPriceMin,
+  priceMax: debouncedPriceMax,
     rating: undefined,
     page: 1,
     limit: 20,
@@ -46,28 +51,16 @@ function Category() {
   };
   console.log('filterr', resto);
 
-  const filteredRestaurants = useMemo(() => {
-    if (!resto?.restaurants) return [];
+const filteredRestaurants = useMemo(() => {
+  if (!resto?.restaurants) return [];
 
-    return resto.restaurants.filter((item: Restaurant) => {
-      // rating
-      if (rating != null && Math.floor(item.star) !== rating) {
-        return false;
-      }
+  if (rating == null) return resto.restaurants;
 
-      // price min
-      if (priceMin != null && item.priceRange.min < priceMin) {
-        return false;
-      }
+  return resto.restaurants.filter(
+    (item) => Math.floor(item.star) === rating
+  );
+}, [resto?.restaurants, rating]);
 
-      // price max
-      if (priceMax != null && item.priceRange.max > priceMax) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [resto?.restaurants, rating, priceMin, priceMax]);
 
   if (restoLoading) return <p>Loading...</p>;
   if (restoError) return <p>Error</p>;
@@ -94,6 +87,7 @@ function Category() {
                     }
                   />
                   <label className='text-md-regular'>{category.name}</label>
+                  
                 </div>
               ))}
             </div>

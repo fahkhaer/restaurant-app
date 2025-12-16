@@ -1,6 +1,6 @@
 import { baseUrl } from '@/config/constants';
 import type { GetRestaurantsParams } from '@/types/restaurant';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export function GetRecomendation() {
@@ -82,6 +82,6 @@ export function GetRestaurants(params: GetRestaurantsParams) {
 
       return res.data.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 }
