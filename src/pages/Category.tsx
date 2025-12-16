@@ -10,14 +10,14 @@ import { GetRestaurants } from '@/services/api/restaurants';
 import Container from '@/styles/Container';
 import type { Restaurant } from '@/types/restaurant';
 import { Star } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const dummyCategories = [
   { id: 1, name: 'Nearby' },
   { id: 2, name: 'Within 1 km', value: 1 },
   { id: 3, name: 'Within 3 km', value: 2 },
-  { id: 3, name: 'Within 5 km', value: 3 },
+  { id: 4, name: 'Within 5 km', value: 3 },
 ];
 
 function Category() {
@@ -26,7 +26,6 @@ function Category() {
   const [priceMin, setPriceMin] = useState<number | undefined>();
   const [priceMax, setPriceMax] = useState<number | undefined>();
   const [rating, setRating] = useState<number | undefined>();
-  const [category, setCategory] = useState<string | undefined>();
 
   const {
     data: resto,
@@ -37,12 +36,26 @@ function Category() {
     range,
     priceMin,
     priceMax,
-    rating,
-    category,
+    rating: undefined,
     page: 1,
     limit: 20,
-  });
+  }) as {
+    data: { restaurants: Restaurant[] };
+    isLoading: boolean;
+    isError: boolean;
+  };
   console.log('filterr', resto);
+
+  //rating filter
+  const filteredRestaurants = useMemo(() => {
+    if (!resto?.restaurants) return [];
+
+    if (rating == null) return resto.restaurants;
+
+    return resto.restaurants.filter(
+      (item: Restaurant) => Math.floor(item.star) === rating
+    );
+  }, [resto?.restaurants, rating]);
 
   if (restoLoading) return <p>Loading...</p>;
   if (restoError) return <p>Error</p>;
@@ -84,7 +97,11 @@ function Category() {
               <InputGroup>
                 <InputGroupInput
                   placeholder='Minimum Price'
-                  onChange={(e) => setPriceMin(Number(e.target.value))}
+                  onChange={(e) =>
+                    setPriceMin(
+                      e.target.value ? Number(e.target.value) : undefined
+                    )
+                  }
                 />
                 <InputGroupAddon className='h-[54px]'>
                   <Badge
@@ -136,10 +153,13 @@ function Category() {
         </div>
         {/* Right side */}
         <div className='grid grid-cols-2 gap-5 h-fit'>
-          {resto?.restaurants?.map((item: Restaurant) => {
-            console.log('ini', resto.restaurants);
-
-            return (
+          {resto?.restaurants?.length === 0 ? (
+            <div className='col-span-1 text-neutral-500 '>
+              <p className='text-lg font-semibold'>No restaurant found</p>
+              <p className='text-sm'>Try adjusting your filter</p>
+            </div>
+          ) : (
+            filteredRestaurants.map((item: Restaurant) => (
               <Link key={item.id} to={`/detail/${item.id}`}>
                 <CardStore
                   name={item.name}
@@ -148,8 +168,8 @@ function Category() {
                   location={item.place}
                 />
               </Link>
-            );
-          })}
+            ))
+          )}
         </div>
       </section>
     </Container>
