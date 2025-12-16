@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import CardStore from '@/components/ui/CardStore';
-import LoadMoreButton from '@/components/ui/LoadMoreButton';
+import LoadMoreButton from '@/components/ui/custom/LoadMoreButton';
 import { getDistanceKm } from '@/lib/utils/distance';
 import { GetBestSeller, GetRecomendation } from '@/services/api/restaurants';
 import type { RecommendationItem } from '@/types/restaurant';
