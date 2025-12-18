@@ -8,7 +8,7 @@ import {
 import { Button } from './ui/button';
 import CardMenu from './ui/custom/CardMenu';
 import type { Menu } from '@/types/restaurant';
-import errorImg from '@/images/image-off.png';
+import errorImg from '/images/image-off.png';
 import { useAddToCart } from '@/services/api/cart';
 import { useEffect } from 'react';
 
