@@ -1,5 +1,5 @@
 import { baseUrl } from '@/config/constants';
-import type { GetRestaurantsParams } from '@/types/restaurant';
+import type { GetRestaurantsParams, SearchResponse } from '@/types/restaurant';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -85,3 +85,17 @@ export function GetRestaurants(params: GetRestaurantsParams) {
     placeholderData: keepPreviousData,
   });
 }
+
+export const searchRestaurants = async (
+  query: string,
+  page = 1,
+  limit = 20
+) => {
+  const res = await axios.get<{ success: boolean; data: SearchResponse }>(
+    `${baseUrl}/api/resto/search`,
+    {
+      params: { q: query, page, limit },
+    }
+  );
+  return res.data.data;
+};

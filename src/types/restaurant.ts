@@ -59,3 +59,14 @@ export type GetRestaurantsParams = {
   page?: number;
   limit?: number;
 };
+
+export type SearchResponse = {
+  restaurants: Restaurant[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  searchQuery: string;
+};
