@@ -6,7 +6,7 @@ import { GetDetail } from '@/services/api/restaurants';
 import Container from '@/styles/Container';
 import { Icon } from '@iconify/react';
 import { Star } from 'lucide-react';
-import errorImg from '@/assets/images/image-off.png';
+import errorImg from '@/images/image-off.png';
 import { getDistanceKm } from '@/lib/utils/distance';
 import type { Review } from '@/types/reviews';
 import { useParams } from 'react-router-dom';
