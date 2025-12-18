@@ -123,7 +123,7 @@ function AuthPage() {
           <div className='flex items-center gap-4 w-fit'>
             <img
               className='h-auto'
-              src='/icons/logored.png'
+              src='/icons/Logored.png'
               alt='Logo'
               style={{ width: 'clamp(2.5rem,3.5vw,2.63rem)' }}
             />
