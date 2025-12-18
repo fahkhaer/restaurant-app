@@ -65,7 +65,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
     ? scrolled
       ? '/icons/Logored.png'
       : '/icons/Logo.png'
-    : 'src/assets/icons/Logored.png';
+    : '/icons/Logored.png';
 
   return (
     <div

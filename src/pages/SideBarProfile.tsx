@@ -96,7 +96,7 @@ function SideBarProfile() {
               <div className='flex items-center gap-2'>
                 <img
                   className='size-8 rounded-t-2xl'
-                  src='./src/assets/icons/map-logo.png'
+                  src='./icons/map-logo.png'
                   alt='map-logo'
                 />
                 <span className='text-lg-extrabold'>Delivery Address</span>

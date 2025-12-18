@@ -68,7 +68,7 @@ function Home() {
             <div className='w-full bg-[#E0ECFF] rounded-xl p-3 grid place-items-center'>
               <img
                 className='size-12'
-                src={`/src/assets/images/${item.desc}.png`}
+                src={`/images/${item.desc}.png`}
                 alt='icon'
               />
             </div>

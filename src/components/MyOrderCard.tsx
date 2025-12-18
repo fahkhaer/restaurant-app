@@ -61,7 +61,7 @@ export default function MyOrderCard({
         <div className='flex items-center gap-2'>
           <img
             className='size-7 object-cover'
-            src='/src/assets/icons/small-logo.png'
+            src='/icons/small-logo.png'
             alt='food-detail'
           />
 
@@ -86,7 +86,7 @@ export default function MyOrderCard({
           price={` ${item.quantity} x Rp${
             item?.price?.toLocaleString() ?? '0'
           }`}
-          image={item.image ?? '/src/assets/images/price.png'}
+          image={item.image ?? '/images/price.png'}
         />
       ))}
 

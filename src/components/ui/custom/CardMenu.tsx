@@ -28,7 +28,7 @@ function CardMenu({
         <div className={cn('rounded-2xl', className)} style={style}>
           <img
             className='size-[285px] object-cover rounded-t-2xl'
-            src={image || './src/assets/images/price.png'}
+            src={image || '/images/price.png'}
             alt='food-menu'
           />
           <div className='flex-between p-3 md:p-4'>
@@ -54,7 +54,7 @@ function CardMenu({
                 'size-[285px] rounded-l-2xl object-cover',
                 imgClassName
               )}
-              src={image || './src/assets/images/price.png'}
+              src={image || '/images/price.png'}
               alt='food-menu'
             />
 

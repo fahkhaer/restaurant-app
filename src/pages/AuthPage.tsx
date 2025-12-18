@@ -113,7 +113,7 @@ function AuthPage() {
       {/* Left Image */}
       <img
         className='hidden md:block w-1/2 object-cover'
-        src='/src/assets/images/Detail1.png'
+        src='/images/Detail1.png'
         alt='food-detail'
       />
 
@@ -123,7 +123,7 @@ function AuthPage() {
           <div className='flex items-center gap-4 w-fit'>
             <img
               className='h-auto'
-              src='/src/assets/icons/logored.png'
+              src='/icons/logored.png'
               alt='Logo'
               style={{ width: 'clamp(2.5rem,3.5vw,2.63rem)' }}
             />

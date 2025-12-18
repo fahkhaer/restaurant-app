@@ -27,7 +27,7 @@ export default function CartCard({
       <div className='flex items-center gap-2'>
         <img
           className='size-7 object-cover'
-          src={'/src/assets/icons/small-logo.png'}
+          src={'/icons/small-logo.png'}
           alt='food-detail'
         />
         <span className='text-lg-bold'>{name}</span>
@@ -38,7 +38,7 @@ export default function CartCard({
           const menu = item.menu.foodName ?? 'unknown';
           const qty = item.quantity;
           const price = item.menu.price;
-          const img = item.menu.image ?? '/src/assets/images/image-off.png';
+          const img = item.menu.image ?? '/images/image-off.png';
           return (
             <>
               <CardMenu

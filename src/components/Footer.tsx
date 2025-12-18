@@ -12,7 +12,7 @@ export default function Footer() {
               <div className='size-12 w-fit gap-4 flex items-center'>
                 <img
                   className='h-auto'
-                  src='src/assets/icons/logored.png'
+                  src='/icons/logored.png'
                   alt='Logo-text'
                   style={{ width: 'clamp(2.5rem, 3.5vw, 2.63rem)' }}
                 />

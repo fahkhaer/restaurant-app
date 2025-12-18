@@ -114,7 +114,7 @@ function Checkout() {
               <div className='flex gap-2'>
                 <img
                   className='size-8 rounded-t-2xl'
-                  src='./src/assets/icons/map-logo.png'
+                  src='./icons/map-logo.png'
                   alt='map-logo'
                 />
                 <span className='text-lg-extrabold'>Delivery Address</span>
@@ -148,7 +148,7 @@ function Checkout() {
                 <div className='flex gap-2'>
                   <img
                     className='size-8 rounded-t-2xl'
-                    src='./src/assets/icons/small-logo.png'
+                    src='./icons/small-logo.png'
                     alt='restaurant-logo'
                   />
                   <span className='text-lg-extrabold'>
@@ -205,22 +205,22 @@ function Checkout() {
                   {
                     id: 'BNI',
                     label: 'BNI Virtual Account',
-                    img: './src/assets/icons/BNI.png',
+                    img: './icons/BNI.png',
                   },
                   {
                     id: 'BRI',
                     label: 'BRI Virtual Account',
-                    img: './src/assets/icons/BRI.png',
+                    img: './icons/BRI.png',
                   },
                   {
                     id: 'BCA',
                     label: 'BCA Virtual Account',
-                    img: './src/assets/icons/BCA.png',
+                    img: './icons/BCA.png',
                   },
                   {
                     id: 'Mandiri',
                     label: 'Mandiri Virtual Account',
-                    img: './src/assets/icons/mandiri.png',
+                    img: './icons/mandiri.png',
                   },
                 ].map((method, index, arr) => (
                   <React.Fragment key={method.id}>

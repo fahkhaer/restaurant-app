@@ -57,7 +57,7 @@ function CardStore({
       <div className='flex w-[370px] gap-3'>
         <img
           className='size-[120px] rounded-md object-cover'
-          src={logo || '/src/assets/images/burger-king.png'}
+          src={logo || '/images/burger-king.png'}
           alt='company-logo'
         />
 
